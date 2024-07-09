@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn GRE Words with "The Boys"</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .gre-word {
+            font-weight: bold;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        #darkModeToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 1;
+            display: none;
+        }
+        .dark-mode {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+        .dark-mode .tooltip {
+            background-color: #555;
+            color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Learn GRE Words with "The Boys"</h1>
+        <button id="darkModeToggle">Toggle Dark Mode</button>
+        <p>"The Boys" is anything but a <span class="gre-word" data-meaning="dull; monotonous">humdrum</span> superhero show. It's a wild ride that'll make you question every <span class="gre-word" data-meaning="treated as a god">deified</span> cape-wearer you've ever admired.</p>
+        <p>Picture this: In a world where superheroes <span class="gre-word" data-meaning="exist in large numbers">abound</span>, they're not the <span class="gre-word" data-meaning="gentle; not harmful">benign</span> saviors we expect. Nope, they're more likely to be <span class="gre-word" data-meaning="greedy for wealth">avaricious</span> celebs with a <span class="gre-word" data-meaning="tendency">proclivity</span> for bad behavior. The show's tone? Far from <span class="gre-word" data-meaning="pleasant">congenial</span> - it's a <span class="gre-word" data-meaning="bitterly sarcastic">caustic</span> take on power and fame.</p>
+        <p>Enter Billy Butcher, the show's <span class="gre-word" data-meaning="talkative">loquacious</span> anti-hero with a <span class="gre-word" data-meaning="hatred of mankind">misanthropic</span> streak a mile wide. He's got a bone to pick with supes, especially Homelander, the poster boy for everything wrong with superhero culture.</p>
+        <!-- ... (rest of the text) ... -->
+    </div>
+    <script>
+        const greWords = document.querySelectorAll('.gre-word');
+        const body = document.body;
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        greWords.forEach(word => {
+            word.addEventListener('mouseover', (e) => {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.textContent = word.dataset.meaning;
+                
+                const rect = word.getBoundingClientRect();
+                tooltip.style.left = `${rect.left}px`;
+                tooltip.style.top = `${rect.bottom + window.scrollY}px`;
+                
+                document.body.appendChild(tooltip);
+                tooltip.style.display = 'block';
+            });
+
+            word.addEventListener('mouseout', () => {
+                const tooltip = document.querySelector('.tooltip');
+                if (tooltip) {
+                    tooltip.remove();
+                }
+            });
+        });
+
+        darkModeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html>
