@@ -11,6 +11,12 @@
             margin: 0;
             padding: 20px;
             transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            justify-content: space-between;
+            background-image: url(images/billy.png), url(images/homelander.png);
+            background-repeat: no-repeat;
+            background-position: left center, right center;
+            background-attachment: fixed;
         }
         .container {
             max-width: 800px;
@@ -21,8 +27,14 @@
         }
         .gre-word {
             font-weight: bold;
-            text-decoration: underline;
+            background-color: #ffffff;
+            padding: 2px 4px;
+            border-radius: 3px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .gre-word:hover {
+            background-color: #e0e0e0;
         }
         #darkModeToggle {
             position: fixed;
@@ -52,27 +64,74 @@
             background-color: #555;
             color: #f4f4f4;
         }
+        .dark-mode .gre-word {
+            background-color: #444;
+        }
+        .dark-mode .gre-word:hover {
+            background-color: #555;
+        }
+        .info-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-width: 400px;
+            width: 90%;
+        }
+        .info-window h2 {
+            margin-top: 0;
+        }
+        .info-window button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .dark-mode .info-window {
+            background-color: #444;
+            color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Learn GRE Words with "The Boys"</h1>
         <button id="darkModeToggle">Toggle Dark Mode</button>
-        <p>"The Boys" is anything but a <span class="gre-word" data-meaning="dull; monotonous">humdrum</span> superhero show. It's a wild ride that'll make you question every <span class="gre-word" data-meaning="treated as a god">deified</span> cape-wearer you've ever admired.</p>
-        <p>Picture this: In a world where superheroes <span class="gre-word" data-meaning="exist in large numbers">abound</span>, they're not the <span class="gre-word" data-meaning="gentle; not harmful">benign</span> saviors we expect. Nope, they're more likely to be <span class="gre-word" data-meaning="greedy for wealth">avaricious</span> celebs with a <span class="gre-word" data-meaning="tendency">proclivity</span> for bad behavior. The show's tone? Far from <span class="gre-word" data-meaning="pleasant">congenial</span> - it's a <span class="gre-word" data-meaning="bitterly sarcastic">caustic</span> take on power and fame.</p>
-        <p>Enter Billy Butcher, the show's <span class="gre-word" data-meaning="talkative">loquacious</span> anti-hero with a <span class="gre-word" data-meaning="hatred of mankind">misanthropic</span> streak a mile wide. He's got a bone to pick with supes, especially Homelander, the poster boy for everything wrong with superhero culture.</p>
-        <!-- ... (rest of the text) ... -->
+        <p>"The Boys" is anything but a <span class="gre-word" data-word="humdrum">humdrum</span> superhero show. It's a wild ride that'll make you question every <span class="gre-word" data-word="deified">deified</span> cape-wearer you've ever admired.</p>
+        <p>Picture this: In a world where superheroes <span class="gre-word" data-word="abound">abound</span>, they're not the <span class="gre-word" data-word="benign">benign</span> saviors we expect. Nope, they're more likely to be <span class="gre-word" data-word="avaricious">avaricious</span> celebs with a <span class="gre-word" data-word="proclivity">proclivity</span> for bad behavior. The show's tone? Far from <span class="gre-word" data-word="congenial">congenial</span> - it's a <span class="gre-word" data-word="caustic">caustic</span> take on power and fame.</p>
+        <p>Enter Billy Butcher, the show's <span class="gre-word" data-word="loquacious">loquacious</span> anti-hero with a <span class="gre-word" data-word="misanthropic">misanthropic</span> streak a mile wide. He's got a bone to pick with supes, especially Homelander, the poster boy for everything wrong with superhero culture.</p>
     </div>
     <script>
         const greWords = document.querySelectorAll('.gre-word');
         const body = document.body;
         const darkModeToggle = document.getElementById('darkModeToggle');
 
+        // Simulated dictionary (replace with actual data later)
+        const wordDictionary = {
+            humdrum: {
+                meaning: "dull; monotonous",
+                usage: "The humdrum routine of office life was starting to wear on her.",
+                root: "From 'hum' + 'drum', imitating a monotonous sound",
+                synonyms: ["boring", "tedious", "mundane"]
+            },
+            deified: {
+                meaning: "treated as a god",
+                usage: "The ancient pharaohs were deified by their subjects.",
+                root: "From Latin 'deus' meaning 'god'",
+                synonyms: ["idolized", "exalted", "venerated"]
+            },
+            // Add more words here...
+        };
+
         greWords.forEach(word => {
             word.addEventListener('mouseover', (e) => {
                 const tooltip = document.createElement('div');
                 tooltip.className = 'tooltip';
-                tooltip.textContent = word.dataset.meaning;
+                tooltip.textContent = wordDictionary[word.dataset.word].meaning;
                 
                 const rect = word.getBoundingClientRect();
                 tooltip.style.left = `${rect.left}px`;
@@ -87,6 +146,24 @@
                 if (tooltip) {
                     tooltip.remove();
                 }
+            });
+
+            word.addEventListener('click', () => {
+                const infoWindow = document.createElement('div');
+                infoWindow.className = 'info-window';
+                const wordInfo = wordDictionary[word.dataset.word];
+                infoWindow.innerHTML = `
+                    <h2>${word.dataset.word}</h2>
+                    <p><strong>Meaning:</strong> ${wordInfo.meaning}</p>
+                    <p><strong>Usage:</strong> ${wordInfo.usage}</p>
+                    <p><strong>Root:</strong> ${wordInfo.root}</p>
+                    <p><strong>Synonyms:</strong> ${wordInfo.synonyms.join(', ')}</p>
+                    <p>Are you satisfied with this content?</p>
+                    <button onclick="this.style.backgroundColor='green'">👍</button>
+                    <button onclick="this.style.backgroundColor='red'">👎</button>
+                    <button onclick="this.parentElement.remove()">Close</button>
+                `;
+                document.body.appendChild(infoWindow);
             });
         });
 
