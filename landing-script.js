@@ -1,6 +1,6 @@
 const phrases = [
     "Master GRE Vocab",
-    "Discover Words in Stories You Love",
+    "Discover Words in Stories",
     "Learn. Enjoy. Excel."
 ];
 
