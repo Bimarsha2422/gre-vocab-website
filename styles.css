@@ -1,0 +1,384 @@
+body {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    line-height: 1.8;
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #f5f5f5;
+    color: #333;
+    background-image: url(images/billy.png), url(images/homelander.png);
+    background-repeat: no-repeat;
+    background-position: left center, right center;
+    background-attachment: fixed;
+    background-size: contain;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+.gre-word {
+    background-color: rgba(230, 243, 255, 0.5);
+    padding: 2px 4px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.gre-word:hover {
+    background-color: rgba(197, 225, 255, 0.7);
+} 
+
+#darkModeToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#darkModeToggle:hover {
+    background-color: #34495e;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #2c3e50;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    z-index: 1;
+    display: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode styles */
+.dark-mode {
+    background-color: #2c3e50;
+    color: #f4f4f4;
+}
+
+.dark-mode .container {
+    background-color: rgba(52, 73, 94, 0.9);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode h1 {
+    color: #ecf0f1;
+}
+
+.dark-mode .tooltip {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+
+.dark-mode #darkModeToggle {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+.dark-mode #darkModeToggle:hover {
+    background-color: #bdc3c7;
+}
+
+
+
+/* Info window styles */
+.info-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-width: 450px;
+    width: 90%;
+}
+
+.info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.info-window h2 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.close-btn {
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #e74c3c;
+}
+
+.info-window p {
+    margin-bottom: 10px;
+}
+
+.feedback {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.emoji {
+    font-size: 1.8em;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.emoji:hover {
+    transform: scale(1.2);
+}
+
+.dark-mode .info-window {
+    background-color: #34495e;
+    color: #ecf0f1;
+}
+
+.dark-mode .info-window h2 {
+    color: #ecf0f1;
+}
+
+.compound-v-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    background-color: rgba(0, 100, 255, 0.5);
+    border-radius: 50%;
+    opacity: 0;
+    animation: float 15s infinite;
+}
+
+.v-shape {
+    position: absolute;
+    width: 2px;
+    background-color: rgba(0, 100, 255, 0.8);
+    transform-origin: top center;
+    animation: v-float 10s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-20vh) scale(1);
+        opacity: 0;
+    }
+}
+
+@keyframes v-float {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(100vh) scaleY(0);
+    }
+    20%, 80% {
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(40vh) scaleY(1);
+    }
+}
+
+@media (min-width: 1200px) {
+    body {
+        background-size: 25%, 20%; 
+    }
+    
+    .container {
+        margin: 0 auto;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 1199px) {
+    body {
+        background-image: none;
+    }
+}
+
+/* ... (keep existing styles) */
+
+
+
+/* Star rating styles */
+.star-rating {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.star {
+    color: #ffd700;
+    transition: color 0.2s;
+}
+
+.star:hover {
+    color: #ffcc00;
+}
+
+.average-rating {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+}
+
+input:checked + .slider {
+    background-color: #1a242e;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.slider-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    transition: opacity 0.2s ease;
+}
+
+.light-icon {
+    left: 8px;
+}
+
+.dark-icon {
+    right: 8px;
+    opacity: 0;
+}
+
+input:checked + .slider .light-icon {
+    opacity: 0;
+}
+
+input:checked + .slider .dark-icon {
+    opacity: 1;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #2c3e50;
+    color: #f4f4f4;
+}
+
+body.dark-mode .container {
+    background-color: rgba(52, 73, 94, 0.9);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode h1 {
+    color: #ecf0f1;
+}
+
+body.dark-mode .tooltip {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+body.dark-mode .gre-word {
+    background-color: rgba(70, 92, 113, 0.7);
+    color: #ecf0f1;
+}
+
+body.dark-mode .gre-word:hover {
+    background-color: rgba(100, 130, 160, 0.9);
+}
+
+body.dark-mode .info-window {
+    background-color: #34495e;
+    color: #ecf0f1;
+}
+
+body.dark-mode .info-window h2 {
+    color: #ecf0f1;
+}
