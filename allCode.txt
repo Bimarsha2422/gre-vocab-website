@@ -1,0 +1,1833 @@
+###index.html
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRE Vocab with Pop Culture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app"></div>
+    <script src="words.js"></script>
+    <script src="landing-script.js"></script>
+    <script src="script.js"></script>
+    <script src="router.js"></script>
+</body>
+</html>```
+
+###script.js
+```
+// Get the current page name from the URL
+
+function getCurrentPage() {
+    return window.location.pathname.split('/').pop().split('.')[0];
+}
+
+// Function to create and append a tooltip
+function createTooltip(word, meaning, rect) {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = meaning;
+    
+    tooltip.style.left = `${rect.left}px`;
+    tooltip.style.top = `${rect.bottom + window.scrollY}px`;
+    
+    document.body.appendChild(tooltip);
+    tooltip.style.display = 'block';
+}
+function createInfoWindow(word, info) {
+    const infoWindow = document.createElement('div');
+    infoWindow.className = 'info-window';
+    
+    infoWindow.innerHTML = `
+        <div class="info-header">
+            <h2>${word}</h2>
+            <span class="close-btn">&#10005;</span>
+        </div>
+        <p><strong>Meaning:</strong> ${info.meaning}</p>
+        <p><strong>Usage:</strong> ${info.usage}</p>
+        <p><strong>Root:</strong> ${info.root}</p>
+        <p><strong>Synonyms:</strong> ${info.synonyms.join(', ')}</p>
+    `;
+    document.body.appendChild(infoWindow);
+
+    const closeBtn = infoWindow.querySelector('.close-btn');
+    closeBtn.addEventListener('click', () => infoWindow.remove());
+
+    document.addEventListener('click', function closeOnClickOutside(e) {
+        if (!infoWindow.contains(e.target) && e.target !== document.querySelector('.gre-word:hover')) {
+            infoWindow.remove();
+            document.removeEventListener('click', closeOnClickOutside);
+        }
+    });
+}
+
+
+function createStars() {
+    let starsHTML = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHTML += `<span class="star" data-value="${i}">&#9734;</span>`;
+    }
+    return starsHTML;
+}
+
+function updateStarDisplay(container, rating) {
+    const stars = container.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        star.innerHTML = index < rating ? '&#9733;' : '&#9734;';
+    });
+}
+
+function saveFeedback(word, rating) {
+    let feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
+    if (!Array.isArray(feedback[word])) {
+        feedback[word] = [];
+    }
+    feedback[word].push(rating);
+    localStorage.setItem('greFeedback', JSON.stringify(feedback));
+}
+
+function getAverageRating(word) {
+    const feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
+    const ratings = Array.isArray(feedback[word]) ? feedback[word] : [];
+    if (ratings.length === 0) return 0;
+    const sum = ratings.reduce((a, b) => a + b, 0);
+    return sum / ratings.length;
+}
+
+function updateAverageRating(infoWindow, word) {
+    const averageRating = getAverageRating(word);
+    const averageElement = infoWindow.querySelector('.average-rating');
+    averageElement.textContent = `Average rating: ${averageRating.toFixed(1)}`;
+}
+
+function highlightGREWords(text) {
+    return text.replace(/\b(\w+)\b/g, (match, word) => {
+        if (wordDictionary.hasOwnProperty(word.toLowerCase())) {
+            return `<span class="gre-word" data-word="${word.toLowerCase()}">${word}</span>`;
+        }
+        return match;
+    });
+}
+function initializeContent() {
+    const contentDiv = document.getElementById('content');
+    if (!contentDiv) return;
+
+    document.querySelectorAll('.gre-word').forEach(word => {
+        word.addEventListener('click', (e) => {
+            e.preventDefault();
+            const wordData = wordDictionary[word.dataset.word];
+            if (wordData) {
+                createInfoWindow(word.dataset.word, wordData);
+            }
+        });
+    });
+}
+
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+}
+
+
+function setInitialTheme() {
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+    const checkbox = document.getElementById('checkbox');
+    if (checkbox) {
+        checkbox.checked = document.body.classList.contains('dark-mode');
+    }
+}
+
+function createParticle() {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.animationDuration = 15 + Math.random() * 10 + 's';
+    particle.style.width = particle.style.height = Math.random() * 5 + 5 + 'px';
+    return particle;
+}
+
+function createVShape() {
+    const vContainer = document.createElement('div');
+    vContainer.style.left = Math.random() * 80 + 10 + 'vw';
+    vContainer.style.top = '100vh';
+    vContainer.style.position = 'absolute';
+
+    const leftLine = document.createElement('div');
+    leftLine.classList.add('v-shape');
+    leftLine.style.height = '100px';
+    leftLine.style.transform = 'rotate(-30deg)';
+
+    const rightLine = document.createElement('div');
+    rightLine.classList.add('v-shape');
+    rightLine.style.height = '100px';
+    rightLine.style.transform = 'rotate(30deg)';
+
+    vContainer.appendChild(leftLine);
+    vContainer.appendChild(rightLine);
+
+    return vContainer;
+}
+
+function setupCompoundV() {
+    const container = document.createElement('div');
+    container.classList.add('compound-v-container');
+    document.body.appendChild(container);
+
+    for (let i = 0; i < 50; i++) {
+        container.appendChild(createParticle());
+    }
+
+    setInterval(() => {
+        const vShape = createVShape();
+        container.appendChild(vShape);
+        setTimeout(() => {
+            vShape.remove();
+        }, 10000);
+    }, 15000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    if (toggleSwitch) {
+        toggleSwitch.addEventListener('change', toggleDarkMode, false);
+        setInitialTheme();
+    }
+    
+    initializeContent();
+    setupCompoundV();
+});
+
+window.initializeContent = initializeContent;
+
+```
+
+###router.js
+```
+function loadContent() {
+    const app = document.getElementById('app');
+    if (!app) {
+        console.error('App container not found');
+        return;
+    }
+
+    const hash = window.location.hash.substring(1);
+    const currentPage = hash || 'index';
+
+    if (currentPage === 'index') {
+        // Load the landing page content
+        app.innerHTML = `
+            <div class="landing-page">
+                <div class="container">
+                    <div id="animated-text"></div>
+                    <div class="series-selection">
+                        <!-- This will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        `;
+        populateSeriesButtons();
+        if (typeof window.startLandingAnimation === 'function') {
+            window.startLandingAnimation();
+        } else {
+            console.error('startLandingAnimation function not found. Make sure landing-script.js is loaded.');
+        }
+    } else if (seriesConfig && seriesConfig.hasOwnProperty(currentPage)) {
+        // Load the series page content
+        app.innerHTML = `
+            <div class="container">
+                <h1 id="series-title">${seriesConfig[currentPage].title}</h1>
+                <div id="content"></div>
+                <a href="#" class="back-button">Back to Series Selection</a>
+            </div>
+        `;
+        loadSeriesContent(currentPage);
+    } else {
+        // 404 page
+        app.innerHTML = '<h1>404 - Page Not Found</h1>';
+    }
+}
+
+function populateSeriesButtons() {
+    const seriesSelection = document.querySelector('.series-selection');
+    if (!seriesSelection) return;
+
+    for (let series in seriesConfig) {
+        const button = document.createElement('a');
+        button.href = `#${series}`;
+        button.className = 'series-button';
+        button.innerHTML = `
+            <i class="${seriesConfig[series].icon}"></i>
+            <span>${seriesConfig[series].title}</span>
+        `;
+        seriesSelection.appendChild(button);
+    }
+}
+
+function loadSeriesContent(series) {
+    const contentDiv = document.getElementById('content');
+    if (!contentDiv) return;
+
+    if (seriesContent && seriesContent[series]) {
+        contentDiv.innerHTML = highlightGREWords(seriesContent[series].join(' '));
+        initializeContent();
+    } else {
+        contentDiv.innerHTML = '<p>Content not found for this series.</p>';
+    }
+}
+
+// Initial load
+window.addEventListener('DOMContentLoaded', loadContent);
+
+// Handle navigation
+window.addEventListener('hashchange', loadContent);
+
+// Ensure seriesConfig and seriesContent are available
+if (typeof seriesConfig === 'undefined' || typeof seriesContent === 'undefined') {
+    console.error('seriesConfig or seriesContent is not defined. Make sure words.js is loaded correctly.');
+}```
+
+###styles.css
+```
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Space+Mono&display=swap');
+
+/* Global Styles */
+/* Reset margin, padding, and box-sizing for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style for the body of the document */
+body {
+    font-family: 'Montserrat', sans-serif;  /* Set the default font to Roboto */
+    font-size: 18px; /* Set base font size */
+    line-height: 1.8; /* Set line height */
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add padding around the body */
+    transition: background-color 0.3s, color 0.3s; /* Add smooth transition for background and text color changes */
+    background-color: #f5f5f5; /* Set background color */
+    color: #333; /* Set text color */
+    background-image: url(images/billy.png), url(images/homelander.png);
+    background-repeat: no-repeat;
+    background-position: left center, right center;
+    background-attachment: fixed;
+    background-size: contain;
+}
+
+/* Container style for centered content */
+.container {
+    max-width: 800px; /* Maximum width of the container */
+    margin: 0 auto; /* Center the container horizontally */
+    background-color: #f5f5f5; /* Set background color with transparency */
+    padding: 30px; /* Add padding inside the container */
+    border-radius: 10px; /* Round the corners */
+    box-shadow: 0 0 0px rgba(255, 255, 255, 0.1); /* Add subtle shadow */
+}
+
+/* Style for main headings */
+h1 {
+    text-align: center; /* Center-align the text */
+    font-size: 2.5em; /* Set font size */
+    margin-bottom: 30px; /* Add space below the heading */
+    color: #2c3e50; /* Set text color */
+}
+
+/* GRE Word Styles */
+/* Style for GRE words */
+.gre-word {
+    background-color: rgba(230, 243, 255, 0.5); /* Set background color with transparency */
+    padding: 2px 4px; /* Add padding around the word */
+    border-radius: 3px; /* Round the corners */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s; /* Add smooth transition for background color change */
+}
+
+/* Hover effect for GRE words */
+.gre-word:hover {
+    background-color: rgba(197, 225, 255, 0.7); /* Change background color on hover */
+}
+
+/* Tooltip Styles */
+/* Style for tooltips */
+.tooltip {
+    position: absolute; /* Position the tooltip absolutely */
+    background-color: #2c3e50; /* Set background color */
+    color: white; /* Set text color */
+    padding: 8px 12px; /* Add padding inside the tooltip */
+    border-radius: 4px; /* Round the corners */
+    font-size: 16px; /* Set font size */
+    z-index: 1; /* Ensure the tooltip appears above other elements */
+    display: none; /* Hide the tooltip by default */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+/* Info Window Styles */
+/* Style for informational windows */
+.info-window {
+    position: fixed; /* Position the info window fixed */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust positioning to exact center */
+    background-color: white; /* Set background color */
+    padding: 25px; /* Add padding inside the info window */
+    border-radius: 10px; /* Round the corners */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+    z-index: 1000; /* Ensure the info window appears above other elements */
+    max-width: 450px; /* Set maximum width */
+    width: 90%; /* Set width */
+}
+
+/* Style for the header of info windows */
+.info-header {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 15px; /* Add space below the header */
+}
+
+/* Style for headings within info windows */
+.info-window h2 {
+    margin: 0; /* Remove margin */
+    color: #2c3e50; /* Set text color */
+}
+
+/* Style for close button */
+.close-btn {
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 1.5em; /* Set font size */
+    color: #e74c3c; /* Set text color */
+}
+
+/* Style for paragraphs within info windows */
+.info-window p {
+    margin-bottom: 10px; /* Add space below paragraphs */
+}
+
+/* Feedback Styles */
+/* Style for feedback section */
+.feedback {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    margin-top: 20px; /* Add space above the feedback section */
+}
+
+/* Star Rating Styles */
+/* Style for star rating section */
+.star-rating {
+    font-size: 24px; /* Set font size */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Style for individual stars */
+.star {
+    color: #ffd700; /* Set star color */
+    transition: color 0.2s; /* Add smooth transition for color change */
+}
+
+/* Hover effect for stars */
+.star:hover {
+    color: #ffcc00; /* Change star color on hover */
+}
+
+/* Style for displaying average rating */
+.average-rating {
+    margin-top: 10px; /* Add space above the rating */
+    font-style: italic; /* Set font style to italic */
+}
+
+/* Theme Switch Styles */
+/* Wrapper style for theme switch */
+.theme-switch-wrapper {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically */
+    position: fixed; /* Position the wrapper fixed */
+    top: 20px; /* Set distance from the top */
+    right: 20px; /* Set distance from the right */
+}
+
+/* Style for theme switch */
+.theme-switch {
+    display: inline-block; /* Display as inline-block */
+    height: 34px; /* Set height */
+    position: relative; /* Position relative */
+    width: 60px; /* Set width */
+}
+
+/* Hide input element */
+.theme-switch input {
+    display: none; /* Hide the input element */
+}
+
+/* Style for the slider */
+.slider {
+    background-color: #ccc; /* Set background color */
+    bottom: 0; /* Position at the bottom */
+    cursor: pointer; /* Change cursor to pointer */
+    left: 0; /* Position on the left */
+    position: absolute; /* Position absolutely */
+    right: 0; /* Position on the right */
+    top: 0; /* Position on the top */
+    transition: .4s; /* Add smooth transition */
+}
+
+/* Style for the slider before element */
+.slider:before {
+    background-color: #fff; /* Set background color */
+    bottom: 4px; /* Position at the bottom */
+    content: ""; /* Empty content */
+    height: 26px; /* Set height */
+    left: 4px; /* Position on the left */
+    position: absolute; /* Position absolutely */
+    transition: .4s; /* Add smooth transition */
+    width: 26px; /* Set width */
+}
+
+/* Style for checked input */
+input:checked + .slider {
+    background-color: #1a242e; /* Change background color when checked */
+}
+
+/* Style for the slider before element when input is checked */
+input:checked + .slider:before {
+    transform: translateX(26px); /* Move the slider when checked */
+}
+
+/* Style for rounded slider */
+.slider.round {
+    border-radius: 34px; /* Round the corners */
+}
+
+/* Style for rounded slider before element */
+.slider.round:before {
+    border-radius: 50%; /* Make the element circular */
+}
+
+/* Style for slider icons */
+.slider-icon {
+    position: absolute; /* Position absolutely */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust positioning to exact center */
+    font-size: 16px; /* Set font size */
+    transition: opacity 0.2s ease; /* Add smooth transition for opacity */
+}
+
+/* Style for light icon */
+.light-icon {
+    left: 8px; /* Position on the left */
+}
+
+/* Style for dark icon */
+.dark-icon {
+    right: 8px; /* Position on the right */
+    opacity: 0; /* Hide the icon by default */
+}
+
+/* Style for light icon when input is checked */
+input:checked + .slider .light-icon {
+    opacity: 0; /* Hide the light icon */
+}
+
+/* Style for dark icon when input is checked */
+input:checked + .slider .dark-icon {
+    opacity: 1; /* Show the dark icon */
+}
+
+/* Dark Mode Styles */
+/* Style for dark mode body */
+body.dark-mode {
+    background-color: #000015; /* Set background color for dark mode */
+    color: #f0f0f0; /* Set text color for dark mode */
+}
+
+/* Style for dark mode container */
+body.dark-mode .container {
+    background-color: #000015; /* Set background color with transparency */
+    box-shadow: 0 0 20px #000015; /* Add shadow */
+}
+
+/* Style for dark mode main headings */
+body.dark-mode h1 {
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Style for dark mode tooltips */
+body.dark-mode .tooltip {
+    background-color: #ecf0f1; /* Set background color */
+    color: #2c3e50; /* Set text color */
+}
+
+/* Style for dark mode GRE words */
+body.dark-mode .gre-word {
+    background-color: rgb(1, 1, 63); /* Set background color with transparency */
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Hover effect for dark mode GRE words */
+body.dark-mode .gre-word:hover {
+    background-color: rgba(70, 92, 113, 0.7); /* Change background color on hover */
+}
+
+/* Style for dark mode info windows */
+body.dark-mode .info-window {
+    background-color: #2c3e50; /* Set background color */
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Style for dark mode headings within info windows */
+body.dark-mode .info-window h2 {
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Landing Page Styles */
+/* Style for landing page */
+.landing-page {
+    background-color: #000015; /* Set background color */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Set height to full viewport height */
+    margin: 0; /* Remove default margin */
+    font-family: 'Space Mono', monospace; /* Set font to Space Mono */
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Style for landing page container */
+.landing-page .container {
+    text-align: center; /* Center-align text */
+    color: #ffffff; /* Set text color */
+    background-color: transparent; /* Make background transparent */
+    box-shadow: none; /* Remove shadow */
+}
+
+/* Style for animated text */
+#animated-text {
+    font-size: 2.5rem; /* Set font size */
+    font-weight: 700; /* Set font weight */
+    margin-bottom: 3rem; /* Add space below the text */
+    height: 180px; /* Set height */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+}
+
+/* Style for typing text */
+.typing-text {
+    border-right: 2px solid #ffffff; /* Add border to the right */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow */
+    margin-bottom: 1rem; /* Add space below the text */
+}
+
+/* Style for series selection */
+.series-selection {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 1.5rem; /* Add space between items */
+    margin-top: 2em; /* Add space above the section */
+}
+
+/* Style for series buttons */
+.series-button {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    align-items: center; /* Center items horizontally */
+    padding: 1.5rem; /* Add padding inside the button */
+    background-color: rgba(255, 255, 255, 0.1); /* Set background color with transparency */
+    color: #ffffff; /* Set text color */
+    text-decoration: none; /* Remove text decoration */
+    border-radius: 8px; /* Round the corners */
+    transition: all 0.3s ease; /* Add smooth transition */
+    width: 150px; /* Set width */
+}
+
+/* Hover effect for series buttons */
+.series-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Change background color on hover */
+    transform: translateY(-5px); /* Move the button upwards on hover */
+}
+
+/* Style for icons within series buttons */
+.series-button i {
+    font-size: 2rem; /* Set font size */
+    margin-bottom: 0.5rem; /* Add space below the icon */
+}
+
+/* Style for text within series buttons */
+.series-button span {
+    font-size: 1rem; /* Set font size */
+    font-weight: 300; /* Set font weight */
+}
+
+/* Style for back button */
+.back-button {
+    display: inline-block; /* Display as inline-block */
+    margin-top: 1em; /* Add space above the button */
+    padding: 0.5em 1em; /* Add padding inside the button */
+    background-color: #3498db; /* Set background color */
+    color: white; /* Set text color */
+    text-decoration: none; /* Remove text decoration */
+    border-radius: 5px; /* Round the corners */
+    transition: background-color 0.3s ease; /* Add smooth transition for background color change */
+}
+
+/* Hover effect for back button */
+.back-button:hover {
+    background-color: #2980b9; /* Change background color on hover */
+}
+
+/* Compound V Animation Styles */
+/* Container for Compound V animation */
+.compound-v-container {
+    position: fixed; /* Position the container fixed */
+    top: 0; /* Position at the top */
+    left: 0; /* Position on the left */
+    width: 100%; /* Set width to full viewport width */
+    height: 100%; /* Set height to full viewport height */
+    pointer-events: none; /* Disable pointer events */
+    z-index: -1; /* Send the container to the back */
+}
+
+/* Style for particles */
+.particle {
+    position: absolute; /* Position particles absolutely */
+    background-color: rgba(0, 100, 255, 0.5); /* Set background color with transparency */
+    border-radius: 50%; /* Make particles circular */
+    opacity: 0; /* Hide particles by default */
+    animation: float 15s infinite; /* Apply float animation */
+}
+
+/* Style for V shapes */
+.v-shape {
+    position: absolute; /* Position V shapes absolutely */
+    width: 2px; /* Set width */
+    background-color: rgba(0, 100, 255, 0.8); /* Set background color */
+    transform-origin: top center; /* Set transformation origin */
+    animation: v-float 10s ease-in-out infinite; /* Apply v-float animation */
+}
+
+/* Keyframes for float animation */
+@keyframes float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; } /* Start from the bottom, invisible and small */
+    20% { opacity: 0.8; } /* Become more visible */
+    80% { opacity: 0.8; } /* Remain visible */
+    100% { transform: translateY(-20vh) scale(1); opacity: 0; } /* Move up, invisible and full size */
+}
+
+/* Keyframes for V float animation */
+@keyframes v-float {
+    0%, 100% { opacity: 0; transform: translateY(100vh) scaleY(0); } /* Start and end from the bottom, invisible and small */
+    20%, 80% { opacity: 1; } /* Become visible */
+    50% { transform: translateY(40vh) scaleY(1); } /* Move up, visible and full size */
+}
+
+/* Responsive Styles */
+/* Styles for large screens */
+@media (min-width: 1200px) {
+    body {
+        background-size: 25%, 20%; /* Adjust background size */
+    }
+    
+    .container {
+        margin: 0 auto; /* Center the container horizontally */
+        max-width: 50%; /* Set maximum width */
+    }
+}
+
+/* Styles for medium screens */
+@media (max-width: 1199px) {
+    body {
+        background-image: none; /* Remove background image */
+    }
+}
+
+/* Styles for small screens */
+@media (max-width: 600px) {
+    #animated-text {
+        font-size: 1.8rem; /* Adjust font size */
+        height: 150px; /* Adjust height */
+    }
+
+    .series-selection {
+        flex-direction: column; /* Arrange items in a column */
+    }
+
+    .series-button {
+        width: 100%; /* Set width to full container width */
+    }
+}
+```
+
+###landing-script.js
+```
+const phrases = [
+    "Master GRE Vocab",
+    "Through Pop Culture",
+    "Learn. Enjoy. Excel."
+];
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function typeText(text, element) {
+    for (let i = 0; i < text.length; i++) {
+        element.textContent += text[i];
+        await sleep(50); // Adjust typing speed here
+    }
+}
+
+async function eraseText(element) {
+    let text = element.textContent;
+    while (text.length > 0) {
+        text = text.slice(0, -1);
+        element.textContent = text;
+        await sleep(30); // Adjust erasing speed here
+    }
+}
+
+async function animateText() {
+    const textElement = document.getElementById('animated-text');
+    if (!textElement) {
+        console.error('animated-text element not found');
+        return;
+    }
+    
+    while (true) {
+        for (const phrase of phrases) {
+            const phraseElement = document.createElement('div');
+            phraseElement.classList.add('typing-text');
+            textElement.appendChild(phraseElement);
+            
+            await typeText(phrase, phraseElement);
+            await sleep(1500); // Wait before erasing
+            await eraseText(phraseElement);
+            
+            textElement.removeChild(phraseElement);
+        }
+    }
+}
+
+// Don't automatically start the animation
+// Instead, export the function so it can be called from router.js
+window.startLandingAnimation = animateText;```
+
+###series-page-template.html
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn GRE Words</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="series-title">Learn GRE Words</h1>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round">
+                    <div class="slider-icon light-icon">☀️</div>
+                    <div class="slider-icon dark-icon">🌙</div>
+                </div>
+            </label>
+        </div>
+        <div id="content">
+            <!-- Content will be dynamically inserted here by JavaScript -->
+        </div>
+        <a href="index.html" class="back-button">Back to Series Selection</a>
+    </div>
+    <script src="words.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>```
+
+###index.html
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRE Vocab with Pop Culture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app"></div>
+    <script src="words.js"></script>
+    <script src="landing-script.js"></script>
+    <script src="script.js"></script>
+    <script src="router.js"></script>
+</body>
+</html>```
+
+###script.js
+```
+// Get the current page name from the URL
+
+function getCurrentPage() {
+    return window.location.pathname.split('/').pop().split('.')[0];
+}
+
+// Function to create and append a tooltip
+function createTooltip(word, meaning, rect) {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = meaning;
+    
+    tooltip.style.left = `${rect.left}px`;
+    tooltip.style.top = `${rect.bottom + window.scrollY}px`;
+    
+    document.body.appendChild(tooltip);
+    tooltip.style.display = 'block';
+}
+function createInfoWindow(word, info) {
+    const infoWindow = document.createElement('div');
+    infoWindow.className = 'info-window';
+    
+    infoWindow.innerHTML = `
+        <div class="info-header">
+            <h2>${word}</h2>
+            <span class="close-btn">&#10005;</span>
+        </div>
+        <p><strong>Meaning:</strong> ${info.meaning}</p>
+        <p><strong>Usage:</strong> ${info.usage}</p>
+        <p><strong>Root:</strong> ${info.root}</p>
+        <p><strong>Synonyms:</strong> ${info.synonyms.join(', ')}</p>
+    `;
+    document.body.appendChild(infoWindow);
+
+    const closeBtn = infoWindow.querySelector('.close-btn');
+    closeBtn.addEventListener('click', () => infoWindow.remove());
+
+    document.addEventListener('click', function closeOnClickOutside(e) {
+        if (!infoWindow.contains(e.target) && e.target !== document.querySelector('.gre-word:hover')) {
+            infoWindow.remove();
+            document.removeEventListener('click', closeOnClickOutside);
+        }
+    });
+}
+
+
+function createStars() {
+    let starsHTML = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHTML += `<span class="star" data-value="${i}">&#9734;</span>`;
+    }
+    return starsHTML;
+}
+
+function updateStarDisplay(container, rating) {
+    const stars = container.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+        star.innerHTML = index < rating ? '&#9733;' : '&#9734;';
+    });
+}
+
+function saveFeedback(word, rating) {
+    let feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
+    if (!Array.isArray(feedback[word])) {
+        feedback[word] = [];
+    }
+    feedback[word].push(rating);
+    localStorage.setItem('greFeedback', JSON.stringify(feedback));
+}
+
+function getAverageRating(word) {
+    const feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
+    const ratings = Array.isArray(feedback[word]) ? feedback[word] : [];
+    if (ratings.length === 0) return 0;
+    const sum = ratings.reduce((a, b) => a + b, 0);
+    return sum / ratings.length;
+}
+
+function updateAverageRating(infoWindow, word) {
+    const averageRating = getAverageRating(word);
+    const averageElement = infoWindow.querySelector('.average-rating');
+    averageElement.textContent = `Average rating: ${averageRating.toFixed(1)}`;
+}
+
+function highlightGREWords(text) {
+    return text.replace(/\b(\w+)\b/g, (match, word) => {
+        if (wordDictionary.hasOwnProperty(word.toLowerCase())) {
+            return `<span class="gre-word" data-word="${word.toLowerCase()}">${word}</span>`;
+        }
+        return match;
+    });
+}
+function initializeContent() {
+    const contentDiv = document.getElementById('content');
+    if (!contentDiv) return;
+
+    document.querySelectorAll('.gre-word').forEach(word => {
+        word.addEventListener('click', (e) => {
+            e.preventDefault();
+            const wordData = wordDictionary[word.dataset.word];
+            if (wordData) {
+                createInfoWindow(word.dataset.word, wordData);
+            }
+        });
+    });
+}
+
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+}
+
+
+function setInitialTheme() {
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+    const checkbox = document.getElementById('checkbox');
+    if (checkbox) {
+        checkbox.checked = document.body.classList.contains('dark-mode');
+    }
+}
+
+function createParticle() {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.animationDuration = 15 + Math.random() * 10 + 's';
+    particle.style.width = particle.style.height = Math.random() * 5 + 5 + 'px';
+    return particle;
+}
+
+function createVShape() {
+    const vContainer = document.createElement('div');
+    vContainer.style.left = Math.random() * 80 + 10 + 'vw';
+    vContainer.style.top = '100vh';
+    vContainer.style.position = 'absolute';
+
+    const leftLine = document.createElement('div');
+    leftLine.classList.add('v-shape');
+    leftLine.style.height = '100px';
+    leftLine.style.transform = 'rotate(-30deg)';
+
+    const rightLine = document.createElement('div');
+    rightLine.classList.add('v-shape');
+    rightLine.style.height = '100px';
+    rightLine.style.transform = 'rotate(30deg)';
+
+    vContainer.appendChild(leftLine);
+    vContainer.appendChild(rightLine);
+
+    return vContainer;
+}
+
+function setupCompoundV() {
+    const container = document.createElement('div');
+    container.classList.add('compound-v-container');
+    document.body.appendChild(container);
+
+    for (let i = 0; i < 50; i++) {
+        container.appendChild(createParticle());
+    }
+
+    setInterval(() => {
+        const vShape = createVShape();
+        container.appendChild(vShape);
+        setTimeout(() => {
+            vShape.remove();
+        }, 10000);
+    }, 15000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    if (toggleSwitch) {
+        toggleSwitch.addEventListener('change', toggleDarkMode, false);
+        setInitialTheme();
+    }
+    
+    initializeContent();
+    setupCompoundV();
+});
+
+window.initializeContent = initializeContent;
+
+```
+
+###router.js
+```
+function loadContent() {
+    const app = document.getElementById('app');
+    if (!app) {
+        console.error('App container not found');
+        return;
+    }
+
+    const hash = window.location.hash.substring(1);
+    const currentPage = hash || 'index';
+
+    if (currentPage === 'index') {
+        // Load the landing page content
+        app.innerHTML = `
+            <div class="landing-page">
+                <div class="container">
+                    <div id="animated-text"></div>
+                    <div class="series-selection">
+                        <!-- This will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        `;
+        populateSeriesButtons();
+        if (typeof window.startLandingAnimation === 'function') {
+            window.startLandingAnimation();
+        } else {
+            console.error('startLandingAnimation function not found. Make sure landing-script.js is loaded.');
+        }
+    } else if (seriesConfig && seriesConfig.hasOwnProperty(currentPage)) {
+        // Load the series page content
+        app.innerHTML = `
+            <div class="container">
+                <h1 id="series-title">${seriesConfig[currentPage].title}</h1>
+                <div id="content"></div>
+                <a href="#" class="back-button">Back to Series Selection</a>
+            </div>
+        `;
+        loadSeriesContent(currentPage);
+    } else {
+        // 404 page
+        app.innerHTML = '<h1>404 - Page Not Found</h1>';
+    }
+}
+
+function populateSeriesButtons() {
+    const seriesSelection = document.querySelector('.series-selection');
+    if (!seriesSelection) return;
+
+    for (let series in seriesConfig) {
+        const button = document.createElement('a');
+        button.href = `#${series}`;
+        button.className = 'series-button';
+        button.innerHTML = `
+            <i class="${seriesConfig[series].icon}"></i>
+            <span>${seriesConfig[series].title}</span>
+        `;
+        seriesSelection.appendChild(button);
+    }
+}
+
+function loadSeriesContent(series) {
+    const contentDiv = document.getElementById('content');
+    if (!contentDiv) return;
+
+    if (seriesContent && seriesContent[series]) {
+        contentDiv.innerHTML = highlightGREWords(seriesContent[series].join(' '));
+        initializeContent();
+    } else {
+        contentDiv.innerHTML = '<p>Content not found for this series.</p>';
+    }
+}
+
+// Initial load
+window.addEventListener('DOMContentLoaded', loadContent);
+
+// Handle navigation
+window.addEventListener('hashchange', loadContent);
+
+// Ensure seriesConfig and seriesContent are available
+if (typeof seriesConfig === 'undefined' || typeof seriesContent === 'undefined') {
+    console.error('seriesConfig or seriesContent is not defined. Make sure words.js is loaded correctly.');
+}```
+
+###styles.css
+```
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Space+Mono&display=swap');
+
+/* Global Styles */
+/* Reset margin, padding, and box-sizing for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style for the body of the document */
+body {
+    font-family: 'Montserrat', sans-serif;  /* Set the default font to Roboto */
+    font-size: 18px; /* Set base font size */
+    line-height: 1.8; /* Set line height */
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add padding around the body */
+    transition: background-color 0.3s, color 0.3s; /* Add smooth transition for background and text color changes */
+    background-color: #f5f5f5; /* Set background color */
+    color: #333; /* Set text color */
+    background-image: url(images/billy.png), url(images/homelander.png);
+    background-repeat: no-repeat;
+    background-position: left center, right center;
+    background-attachment: fixed;
+    background-size: contain;
+}
+
+/* Container style for centered content */
+.container {
+    max-width: 800px; /* Maximum width of the container */
+    margin: 0 auto; /* Center the container horizontally */
+    background-color: #f5f5f5; /* Set background color with transparency */
+    padding: 30px; /* Add padding inside the container */
+    border-radius: 10px; /* Round the corners */
+    box-shadow: 0 0 0px rgba(255, 255, 255, 0.1); /* Add subtle shadow */
+}
+
+/* Style for main headings */
+h1 {
+    text-align: center; /* Center-align the text */
+    font-size: 2.5em; /* Set font size */
+    margin-bottom: 30px; /* Add space below the heading */
+    color: #2c3e50; /* Set text color */
+}
+
+/* GRE Word Styles */
+/* Style for GRE words */
+.gre-word {
+    background-color: rgba(230, 243, 255, 0.5); /* Set background color with transparency */
+    padding: 2px 4px; /* Add padding around the word */
+    border-radius: 3px; /* Round the corners */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s; /* Add smooth transition for background color change */
+}
+
+/* Hover effect for GRE words */
+.gre-word:hover {
+    background-color: rgba(197, 225, 255, 0.7); /* Change background color on hover */
+}
+
+/* Tooltip Styles */
+/* Style for tooltips */
+.tooltip {
+    position: absolute; /* Position the tooltip absolutely */
+    background-color: #2c3e50; /* Set background color */
+    color: white; /* Set text color */
+    padding: 8px 12px; /* Add padding inside the tooltip */
+    border-radius: 4px; /* Round the corners */
+    font-size: 16px; /* Set font size */
+    z-index: 1; /* Ensure the tooltip appears above other elements */
+    display: none; /* Hide the tooltip by default */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Add shadow */
+}
+
+/* Info Window Styles */
+/* Style for informational windows */
+.info-window {
+    position: fixed; /* Position the info window fixed */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust positioning to exact center */
+    background-color: white; /* Set background color */
+    padding: 25px; /* Add padding inside the info window */
+    border-radius: 10px; /* Round the corners */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+    z-index: 1000; /* Ensure the info window appears above other elements */
+    max-width: 450px; /* Set maximum width */
+    width: 90%; /* Set width */
+}
+
+/* Style for the header of info windows */
+.info-header {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 15px; /* Add space below the header */
+}
+
+/* Style for headings within info windows */
+.info-window h2 {
+    margin: 0; /* Remove margin */
+    color: #2c3e50; /* Set text color */
+}
+
+/* Style for close button */
+.close-btn {
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 1.5em; /* Set font size */
+    color: #e74c3c; /* Set text color */
+}
+
+/* Style for paragraphs within info windows */
+.info-window p {
+    margin-bottom: 10px; /* Add space below paragraphs */
+}
+
+/* Feedback Styles */
+/* Style for feedback section */
+.feedback {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    margin-top: 20px; /* Add space above the feedback section */
+}
+
+/* Star Rating Styles */
+/* Style for star rating section */
+.star-rating {
+    font-size: 24px; /* Set font size */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Style for individual stars */
+.star {
+    color: #ffd700; /* Set star color */
+    transition: color 0.2s; /* Add smooth transition for color change */
+}
+
+/* Hover effect for stars */
+.star:hover {
+    color: #ffcc00; /* Change star color on hover */
+}
+
+/* Style for displaying average rating */
+.average-rating {
+    margin-top: 10px; /* Add space above the rating */
+    font-style: italic; /* Set font style to italic */
+}
+
+/* Theme Switch Styles */
+/* Wrapper style for theme switch */
+.theme-switch-wrapper {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically */
+    position: fixed; /* Position the wrapper fixed */
+    top: 20px; /* Set distance from the top */
+    right: 20px; /* Set distance from the right */
+}
+
+/* Style for theme switch */
+.theme-switch {
+    display: inline-block; /* Display as inline-block */
+    height: 34px; /* Set height */
+    position: relative; /* Position relative */
+    width: 60px; /* Set width */
+}
+
+/* Hide input element */
+.theme-switch input {
+    display: none; /* Hide the input element */
+}
+
+/* Style for the slider */
+.slider {
+    background-color: #ccc; /* Set background color */
+    bottom: 0; /* Position at the bottom */
+    cursor: pointer; /* Change cursor to pointer */
+    left: 0; /* Position on the left */
+    position: absolute; /* Position absolutely */
+    right: 0; /* Position on the right */
+    top: 0; /* Position on the top */
+    transition: .4s; /* Add smooth transition */
+}
+
+/* Style for the slider before element */
+.slider:before {
+    background-color: #fff; /* Set background color */
+    bottom: 4px; /* Position at the bottom */
+    content: ""; /* Empty content */
+    height: 26px; /* Set height */
+    left: 4px; /* Position on the left */
+    position: absolute; /* Position absolutely */
+    transition: .4s; /* Add smooth transition */
+    width: 26px; /* Set width */
+}
+
+/* Style for checked input */
+input:checked + .slider {
+    background-color: #1a242e; /* Change background color when checked */
+}
+
+/* Style for the slider before element when input is checked */
+input:checked + .slider:before {
+    transform: translateX(26px); /* Move the slider when checked */
+}
+
+/* Style for rounded slider */
+.slider.round {
+    border-radius: 34px; /* Round the corners */
+}
+
+/* Style for rounded slider before element */
+.slider.round:before {
+    border-radius: 50%; /* Make the element circular */
+}
+
+/* Style for slider icons */
+.slider-icon {
+    position: absolute; /* Position absolutely */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust positioning to exact center */
+    font-size: 16px; /* Set font size */
+    transition: opacity 0.2s ease; /* Add smooth transition for opacity */
+}
+
+/* Style for light icon */
+.light-icon {
+    left: 8px; /* Position on the left */
+}
+
+/* Style for dark icon */
+.dark-icon {
+    right: 8px; /* Position on the right */
+    opacity: 0; /* Hide the icon by default */
+}
+
+/* Style for light icon when input is checked */
+input:checked + .slider .light-icon {
+    opacity: 0; /* Hide the light icon */
+}
+
+/* Style for dark icon when input is checked */
+input:checked + .slider .dark-icon {
+    opacity: 1; /* Show the dark icon */
+}
+
+/* Dark Mode Styles */
+/* Style for dark mode body */
+body.dark-mode {
+    background-color: #000015; /* Set background color for dark mode */
+    color: #f0f0f0; /* Set text color for dark mode */
+}
+
+/* Style for dark mode container */
+body.dark-mode .container {
+    background-color: #000015; /* Set background color with transparency */
+    box-shadow: 0 0 20px #000015; /* Add shadow */
+}
+
+/* Style for dark mode main headings */
+body.dark-mode h1 {
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Style for dark mode tooltips */
+body.dark-mode .tooltip {
+    background-color: #ecf0f1; /* Set background color */
+    color: #2c3e50; /* Set text color */
+}
+
+/* Style for dark mode GRE words */
+body.dark-mode .gre-word {
+    background-color: rgb(1, 1, 63); /* Set background color with transparency */
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Hover effect for dark mode GRE words */
+body.dark-mode .gre-word:hover {
+    background-color: rgba(70, 92, 113, 0.7); /* Change background color on hover */
+}
+
+/* Style for dark mode info windows */
+body.dark-mode .info-window {
+    background-color: #2c3e50; /* Set background color */
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Style for dark mode headings within info windows */
+body.dark-mode .info-window h2 {
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Landing Page Styles */
+/* Style for landing page */
+.landing-page {
+    background-color: #000015; /* Set background color */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Set height to full viewport height */
+    margin: 0; /* Remove default margin */
+    font-family: 'Space Mono', monospace; /* Set font to Space Mono */
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Style for landing page container */
+.landing-page .container {
+    text-align: center; /* Center-align text */
+    color: #ffffff; /* Set text color */
+    background-color: transparent; /* Make background transparent */
+    box-shadow: none; /* Remove shadow */
+}
+
+/* Style for animated text */
+#animated-text {
+    font-size: 2.5rem; /* Set font size */
+    font-weight: 700; /* Set font weight */
+    margin-bottom: 3rem; /* Add space below the text */
+    height: 180px; /* Set height */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+}
+
+/* Style for typing text */
+.typing-text {
+    border-right: 2px solid #ffffff; /* Add border to the right */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow */
+    margin-bottom: 1rem; /* Add space below the text */
+}
+
+/* Style for series selection */
+.series-selection {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 1.5rem; /* Add space between items */
+    margin-top: 2em; /* Add space above the section */
+}
+
+/* Style for series buttons */
+.series-button {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    align-items: center; /* Center items horizontally */
+    padding: 1.5rem; /* Add padding inside the button */
+    background-color: rgba(255, 255, 255, 0.1); /* Set background color with transparency */
+    color: #ffffff; /* Set text color */
+    text-decoration: none; /* Remove text decoration */
+    border-radius: 8px; /* Round the corners */
+    transition: all 0.3s ease; /* Add smooth transition */
+    width: 150px; /* Set width */
+}
+
+/* Hover effect for series buttons */
+.series-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Change background color on hover */
+    transform: translateY(-5px); /* Move the button upwards on hover */
+}
+
+/* Style for icons within series buttons */
+.series-button i {
+    font-size: 2rem; /* Set font size */
+    margin-bottom: 0.5rem; /* Add space below the icon */
+}
+
+/* Style for text within series buttons */
+.series-button span {
+    font-size: 1rem; /* Set font size */
+    font-weight: 300; /* Set font weight */
+}
+
+/* Style for back button */
+.back-button {
+    display: inline-block; /* Display as inline-block */
+    margin-top: 1em; /* Add space above the button */
+    padding: 0.5em 1em; /* Add padding inside the button */
+    background-color: #3498db; /* Set background color */
+    color: white; /* Set text color */
+    text-decoration: none; /* Remove text decoration */
+    border-radius: 5px; /* Round the corners */
+    transition: background-color 0.3s ease; /* Add smooth transition for background color change */
+}
+
+/* Hover effect for back button */
+.back-button:hover {
+    background-color: #2980b9; /* Change background color on hover */
+}
+
+/* Compound V Animation Styles */
+/* Container for Compound V animation */
+.compound-v-container {
+    position: fixed; /* Position the container fixed */
+    top: 0; /* Position at the top */
+    left: 0; /* Position on the left */
+    width: 100%; /* Set width to full viewport width */
+    height: 100%; /* Set height to full viewport height */
+    pointer-events: none; /* Disable pointer events */
+    z-index: -1; /* Send the container to the back */
+}
+
+/* Style for particles */
+.particle {
+    position: absolute; /* Position particles absolutely */
+    background-color: rgba(0, 100, 255, 0.5); /* Set background color with transparency */
+    border-radius: 50%; /* Make particles circular */
+    opacity: 0; /* Hide particles by default */
+    animation: float 15s infinite; /* Apply float animation */
+}
+
+/* Style for V shapes */
+.v-shape {
+    position: absolute; /* Position V shapes absolutely */
+    width: 2px; /* Set width */
+    background-color: rgba(0, 100, 255, 0.8); /* Set background color */
+    transform-origin: top center; /* Set transformation origin */
+    animation: v-float 10s ease-in-out infinite; /* Apply v-float animation */
+}
+
+/* Keyframes for float animation */
+@keyframes float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; } /* Start from the bottom, invisible and small */
+    20% { opacity: 0.8; } /* Become more visible */
+    80% { opacity: 0.8; } /* Remain visible */
+    100% { transform: translateY(-20vh) scale(1); opacity: 0; } /* Move up, invisible and full size */
+}
+
+/* Keyframes for V float animation */
+@keyframes v-float {
+    0%, 100% { opacity: 0; transform: translateY(100vh) scaleY(0); } /* Start and end from the bottom, invisible and small */
+    20%, 80% { opacity: 1; } /* Become visible */
+    50% { transform: translateY(40vh) scaleY(1); } /* Move up, visible and full size */
+}
+
+/* Responsive Styles */
+/* Styles for large screens */
+@media (min-width: 1200px) {
+    body {
+        background-size: 25%, 20%; /* Adjust background size */
+    }
+    
+    .container {
+        margin: 0 auto; /* Center the container horizontally */
+        max-width: 50%; /* Set maximum width */
+    }
+}
+
+/* Styles for medium screens */
+@media (max-width: 1199px) {
+    body {
+        background-image: none; /* Remove background image */
+    }
+}
+
+/* Styles for small screens */
+@media (max-width: 600px) {
+    #animated-text {
+        font-size: 1.8rem; /* Adjust font size */
+        height: 150px; /* Adjust height */
+    }
+
+    .series-selection {
+        flex-direction: column; /* Arrange items in a column */
+    }
+
+    .series-button {
+        width: 100%; /* Set width to full container width */
+    }
+}
+```
+
+###landing-script.js
+```
+const phrases = [
+    "Master GRE Vocab",
+    "Through Pop Culture",
+    "Learn. Enjoy. Excel."
+];
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function typeText(text, element) {
+    for (let i = 0; i < text.length; i++) {
+        element.textContent += text[i];
+        await sleep(50); // Adjust typing speed here
+    }
+}
+
+async function eraseText(element) {
+    let text = element.textContent;
+    while (text.length > 0) {
+        text = text.slice(0, -1);
+        element.textContent = text;
+        await sleep(30); // Adjust erasing speed here
+    }
+}
+
+async function animateText() {
+    const textElement = document.getElementById('animated-text');
+    if (!textElement) {
+        console.error('animated-text element not found');
+        return;
+    }
+    
+    while (true) {
+        for (const phrase of phrases) {
+            const phraseElement = document.createElement('div');
+            phraseElement.classList.add('typing-text');
+            textElement.appendChild(phraseElement);
+            
+            await typeText(phrase, phraseElement);
+            await sleep(1500); // Wait before erasing
+            await eraseText(phraseElement);
+            
+            textElement.removeChild(phraseElement);
+        }
+    }
+}
+
+// Don't automatically start the animation
+// Instead, export the function so it can be called from router.js
+window.startLandingAnimation = animateText;```
+
+###series-page-template.html
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn GRE Words</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="series-title">Learn GRE Words</h1>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round">
+                    <div class="slider-icon light-icon">☀️</div>
+                    <div class="slider-icon dark-icon">🌙</div>
+                </div>
+            </label>
+        </div>
+        <div id="content">
+            <!-- Content will be dynamically inserted here by JavaScript -->
+        </div>
+        <a href="index.html" class="back-button">Back to Series Selection</a>
+    </div>
+    <script src="words.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>```
+
+###words.js
+```
+// Word dictionary
+const wordDictionary = {
+    humdrum: {
+        meaning: "dull; monotonous",
+        usage: "The humdrum routine of office life was starting to wear on her.",
+        root: "From 'hum' + 'drum', imitating a monotonous sound",
+        synonyms: ["boring", "tedious", "mundane"]
+    },
+    deified: {
+        meaning: "treated as a god",
+        usage: "The ancient pharaohs were deified by their subjects.",
+        root: "From Latin 'deus' meaning 'god'",
+        synonyms: ["idolized", "exalted", "venerated"]
+    },
+    abound: {
+        meaning: "exist in large numbers or amounts",
+        usage: "Opportunities abound for those willing to take risks.",
+        root: "From Latin 'abundare' meaning 'to overflow'",
+        synonyms: ["teem", "flourish", "proliferate"]
+    },
+    benign: {
+        meaning: "gentle and kind; not harmful",
+        usage: "The benign tumor was not a cause for major concern.",
+        root: "From Latin 'benignus' meaning 'kind, generous'",
+        synonyms: ["harmless", "mild", "favorable"]
+    },
+    avaricious: {
+        meaning: "greedy for wealth or material gain",
+        usage: "The avaricious tycoon always sought to increase his fortune.",
+        root: "From Latin 'avarus' meaning 'greedy'",
+        synonyms: ["covetous", "grasping", "mercenary"]
+    },
+    proclivity: {
+        meaning: "a tendency to choose or do something regularly",
+        usage: "He had a proclivity for telling tall tales.",
+        root: "From Latin 'proclivitas' meaning 'a tendency'",
+        synonyms: ["inclination", "predisposition", "propensity"]
+    },
+    congenial: {
+        meaning: "pleasant or agreeable because suited to one's taste",
+        usage: "The congenial atmosphere made everyone feel at ease.",
+        root: "From Latin 'congenialis' meaning 'of the same kind'",
+        synonyms: ["friendly", "harmonious", "compatible"]
+    },
+    caustic: {
+        meaning: "sarcastic in a scathing and bitter way",
+        usage: "His caustic remarks often offended his colleagues.",
+        root: "From Greek 'kaustikos' meaning 'burning'",
+        synonyms: ["acerbic", "scathing", "mordant"]
+    },
+    loquacious: {
+        meaning: "tending to talk a great deal",
+        usage: "The loquacious guest dominated the dinner conversation.",
+        root: "From Latin 'loquax' meaning 'talkative'",
+        synonyms: ["talkative", "garrulous", "voluble"]
+    },
+    misanthropic: {
+        meaning: "disliking humankind and avoiding human society",
+        usage: "His misanthropic tendencies made it difficult for him to work in a team.",
+        root: "From Greek 'misanthropos' meaning 'hating mankind'",
+        synonyms: ["cynical", "antisocial", "reclusive"]
+    }
+};
+
+// Text content for each series
+const seriesContent = {
+    'the-boys': [
+        "\"The Boys\" is anything but a humdrum superhero show. It's a wild ride that'll make you question every deified cape-wearer you've ever admired.",
+        "Picture this: In a world where superheroes abound, they're not the benign saviors we expect. Nope, they're more likely to be avaricious celebs with a proclivity for bad behavior. The show's tone? Far from congenial - it's a caustic take on power and fame.",
+        "Enter Billy Butcher, the show's loquacious anti-hero with a misanthropic streak a mile wide. He's got a bone to pick with supes, especially Homelander, the poster boy for everything wrong with superhero culture."
+    ],
+    'breaking-bad': [
+        "\"Breaking Bad\" is anything but a humdrum crime drama. It's a wild ride that'll make you question every deified anti-hero you've ever admired.",
+        "Picture this: In a world where drug lords abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious chemists with a proclivity for bad behavior. The show's tone? Far from congenial - it's a caustic take on power and morality.",
+        "Enter Walter White, the show's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with society, especially his former colleagues, the poster boys for everything wrong with the American dream."
+    ],
+    'wolf-of-wall-street': [
+        "\"The Wolf of Wall Street\" is anything but a humdrum financial drama. It's a wild ride that'll make you question every deified stockbroker you've ever admired.",
+        "Picture this: In a world where Wall Street tycoons abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious brokers with a proclivity for bad behavior. The movie's tone? Far from congenial - it's a caustic take on greed and excess.",
+        "Enter Jordan Belfort, the film's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with regulations, especially the SEC, the poster boy for everything wrong with financial oversight."
+    ], 
+    'random-asshole': ['fuck you bitch congenial.'], 
+    'random-asshole2': ['fuck you bitch congenial.'], 
+    'random-asshole3': ['fuck you bitch congenial.']
+}; 
+
+// New seriesConfig object
+const seriesConfig = {
+    'the-boys': {
+        title: "The Boys",
+        icon: "fas fa-mask",
+        backgroundImages: ["images/billy.png", "images/homelander.png"],
+        backgroundPositions: ["left center", "right center"]
+    },
+    'breaking-bad': {
+        title: "Breaking Bad",
+        icon: "fas fa-vial"
+    },
+    'wolf-of-wall-street': {
+        title: "The Wolf of Wall Street",
+        icon: "fas fa-chart-line"
+    }, 
+    'random-asshole': {
+        title: "Random Asshole",
+        icon: "fas fa-question" 
+    }, 
+    'random-asshole2': {
+        title: "Random Asshole",
+        icon: "fas fa-question" 
+    }, 
+    'random-asshole3': {
+        title: "Random Asshole",
+        icon: "fas fa-question" 
+    }
+};
+```
+

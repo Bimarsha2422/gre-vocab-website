@@ -1,5 +1,8 @@
 // Get the current page name from the URL
-const currentPage = window.location.pathname.split('/').pop().split('.')[0];
+
+function getCurrentPage() {
+    return window.location.pathname.split('/').pop().split('.')[0];
+}
 
 // Function to create and append a tooltip
 function createTooltip(word, meaning, rect) {
@@ -13,12 +16,9 @@ function createTooltip(word, meaning, rect) {
     document.body.appendChild(tooltip);
     tooltip.style.display = 'block';
 }
-
 function createInfoWindow(word, info) {
     const infoWindow = document.createElement('div');
     infoWindow.className = 'info-window';
-    
-    const averageRating = getAverageRating(word);
     
     infoWindow.innerHTML = `
         <div class="info-header">
@@ -29,11 +29,6 @@ function createInfoWindow(word, info) {
         <p><strong>Usage:</strong> ${info.usage}</p>
         <p><strong>Root:</strong> ${info.root}</p>
         <p><strong>Synonyms:</strong> ${info.synonyms.join(', ')}</p>
-        <p>How helpful was this information?</p>
-        <div class="star-rating" data-word="${word}">
-            ${createStars()}
-        </div>
-        <p class="average-rating">Average rating: ${averageRating.toFixed(1)}</p>
     `;
     document.body.appendChild(infoWindow);
 
@@ -46,17 +41,8 @@ function createInfoWindow(word, info) {
             document.removeEventListener('click', closeOnClickOutside);
         }
     });
-
-    const stars = infoWindow.querySelectorAll('.star');
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            const rating = parseInt(star.dataset.value);
-            saveFeedback(word, rating);
-            updateStarDisplay(star.parentElement, rating);
-            updateAverageRating(infoWindow, word);
-        });
-    });
 }
+
 
 function createStars() {
     let starsHTML = '';
@@ -104,40 +90,35 @@ function highlightGREWords(text) {
         return match;
     });
 }
-
 function initializeContent() {
     const contentDiv = document.getElementById('content');
     if (!contentDiv) return;
-    
-    const seriesText = seriesContent[currentPage].join(' ');
-    contentDiv.innerHTML = highlightGREWords(seriesText);
 
     document.querySelectorAll('.gre-word').forEach(word => {
-        word.addEventListener('mouseover', (e) => {
-            const rect = word.getBoundingClientRect();
-            createTooltip(word.dataset.word, wordDictionary[word.dataset.word].meaning, rect);
-        });
-
-        word.addEventListener('mouseout', () => {
-            const tooltip = document.querySelector('.tooltip');
-            if (tooltip) tooltip.remove();
-        });
-
-        word.addEventListener('click', () => {
-            createInfoWindow(word.dataset.word, wordDictionary[word.dataset.word]);
+        word.addEventListener('click', (e) => {
+            e.preventDefault();
+            const wordData = wordDictionary[word.dataset.word];
+            if (wordData) {
+                createInfoWindow(word.dataset.word, wordData);
+            }
         });
     });
 }
+
 
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
+
 function setInitialTheme() {
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
-        document.getElementById('checkbox').checked = true;
+    }
+    const checkbox = document.getElementById('checkbox');
+    if (checkbox) {
+        checkbox.checked = document.body.classList.contains('dark-mode');
     }
 }
 
@@ -194,9 +175,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     if (toggleSwitch) {
         toggleSwitch.addEventListener('change', toggleDarkMode, false);
+        setInitialTheme();
     }
     
-    setInitialTheme();
     initializeContent();
     setupCompoundV();
 });
+
+window.initializeContent = initializeContent;
+

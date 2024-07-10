@@ -26,6 +26,10 @@ async function eraseText(element) {
 
 async function animateText() {
     const textElement = document.getElementById('animated-text');
+    if (!textElement) {
+        console.error('animated-text element not found');
+        return;
+    }
     
     while (true) {
         for (const phrase of phrases) {
@@ -42,4 +46,6 @@ async function animateText() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', animateText);
+// Don't automatically start the animation
+// Instead, export the function so it can be called from router.js
+window.startLandingAnimation = animateText;
