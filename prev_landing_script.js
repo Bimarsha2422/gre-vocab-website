@@ -1,7 +1,9 @@
-// Get the current page name from the URL
-function getCurrentPage() {
-    return window.location.pathname.split('/').pop().split('.')[0];
-}
+// Text content
+const paragraphs = [
+    "\"The Boys\" is anything but a humdrum superhero show. It's a wild ride that'll make you question every deified cape-wearer you've ever admired.",
+    "Picture this: In a world where superheroes abound, they're not the benign saviors we expect. Nope, they're more likely to be avaricious celebs with a proclivity for bad behavior. The show's tone? Far from congenial - it's a caustic take on power and fame.",
+    "Enter Billy Butcher, the show's loquacious anti-hero with a misanthropic streak a mile wide. He's got a bone to pick with supes, especially Homelander, the poster boy for everything wrong with superhero culture."
+];
 
 // Function to create and append a tooltip
 function createTooltip(word, meaning, rect) {
@@ -16,7 +18,6 @@ function createTooltip(word, meaning, rect) {
     tooltip.style.display = 'block';
 }
 
-// Function to create and append an info window
 function createInfoWindow(word, info) {
     const infoWindow = document.createElement('div');
     infoWindow.className = 'info-window';
@@ -65,7 +66,6 @@ function createInfoWindow(word, info) {
     });
 }
 
-// Function to create stars for rating
 function createStars() {
     let starsHTML = '';
     for (let i = 1; i <= 5; i++) {
@@ -74,7 +74,6 @@ function createStars() {
     return starsHTML;
 }
 
-// Function to update the star display based on rating
 function updateStarDisplay(container, rating) {
     const stars = container.querySelectorAll('.star');
     stars.forEach((star, index) => {
@@ -82,7 +81,6 @@ function updateStarDisplay(container, rating) {
     });
 }
 
-// Function to save feedback to local storage
 function saveFeedback(word, rating) {
     let feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
     if (!Array.isArray(feedback[word])) {
@@ -90,9 +88,9 @@ function saveFeedback(word, rating) {
     }
     feedback[word].push(rating);
     localStorage.setItem('greFeedback', JSON.stringify(feedback));
+    console.log(`Feedback saved for ${word}: ${rating}`);
 }
 
-// Function to get the average rating of a word
 function getAverageRating(word) {
     const feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
     const ratings = Array.isArray(feedback[word]) ? feedback[word] : [];
@@ -101,12 +99,12 @@ function getAverageRating(word) {
     return sum / ratings.length;
 }
 
-// Function to update the average rating display
 function updateAverageRating(infoWindow, word) {
     const averageRating = getAverageRating(word);
     const averageElement = infoWindow.querySelector('.average-rating');
     averageElement.textContent = `Average rating: ${averageRating.toFixed(1)}`;
 }
+
 
 // Function to highlight GRE words in the text
 function highlightGREWords(text) {
@@ -121,8 +119,13 @@ function highlightGREWords(text) {
 // Function to initialize the page content
 function initializeContent() {
     const contentDiv = document.getElementById('content');
-    if (!contentDiv) return;
+    if (!contentDiv) {
+        return;
+    }
+    
+    contentDiv.innerHTML = paragraphs.map(para => `<p>${highlightGREWords(para)}</p>`).join('');
 
+    // Add event listeners to highlighted words
     document.querySelectorAll('.gre-word').forEach(word => {
         word.addEventListener('mouseover', (e) => {
             const rect = word.getBoundingClientRect();
@@ -136,34 +139,48 @@ function initializeContent() {
             }
         });
 
-        word.addEventListener('click', (e) => {
-            e.preventDefault();
-            const wordData = wordDictionary[word.dataset.word];
-            if (wordData) {
-                createInfoWindow(word.dataset.word, wordData);
-            }
+        word.addEventListener('click', () => {
+            createInfoWindow(word.dataset.word, wordDictionary[word.dataset.word]);
         });
     });
 }
 
-// Function to toggle dark mode and save preference in local storage
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-// Function to set the initial theme based on saved preference
+// Function to set the initial theme
 function setInitialTheme() {
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
-    }
-    const checkbox = document.getElementById('checkbox');
-    if (checkbox) {
-        checkbox.checked = document.body.classList.contains('dark-mode');
+        document.getElementById('checkbox').checked = true;
     }
 }
 
-// Function to create a particle for animation
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    toggleSwitch.addEventListener('change', toggleDarkMode, false);
+    
+    setInitialTheme();
+    initializeContent();
+    setupCompoundV();
+});
+
+// Event listener for dark mode toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    }
+
+    initializeContent();
+});
+
+// Add this to the end of script.js
+
 function createParticle() {
     const particle = document.createElement('div');
     particle.classList.add('particle');
@@ -173,7 +190,6 @@ function createParticle() {
     return particle;
 }
 
-// Function to create a V shape for animation
 function createVShape() {
     const vContainer = document.createElement('div');
     vContainer.style.left = Math.random() * 80 + 10 + 'vw';
@@ -196,7 +212,6 @@ function createVShape() {
     return vContainer;
 }
 
-// Function to setup the Compound V animation
 function setupCompoundV() {
     const container = document.createElement('div');
     container.classList.add('compound-v-container');
@@ -215,14 +230,9 @@ function setupCompoundV() {
     }, 15000);
 }
 
-// Event listener for DOM content loaded to initialize features
+// Call setupCompoundV when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-    if (toggleSwitch) {
-        toggleSwitch.addEventListener('change', toggleDarkMode, false);
-        setInitialTheme();
-    }
-    
+    // Existing code
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', () => {
@@ -231,7 +241,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initializeContent();
+
+    // New code for Compound V animation
     setupCompoundV();
 });
 
-window.initializeContent = initializeContent;
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+}
+
+// Update the event listener for dark mode toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        // Check if dark mode was previously enabled
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+        
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+
+    initializeContent();
+    setupCompoundV();
+});
