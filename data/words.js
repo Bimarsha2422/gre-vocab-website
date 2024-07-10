@@ -95,16 +95,18 @@ const seriesContent = {
 const seriesConfig = {
     'the-boys': {
         title: "The Boys",
+        summary: "Learn GRE words through the gritty world of superheroes gone rogue.",
         icon: "fas fa-mask",
-        backgroundImages: ["images/billy.png", "images/homelander.png"],
         backgroundPositions: ["left center", "right center"]
     },
     'breaking-bad': {
         title: "Breaking Bad",
+        summary: "Expand your vocabulary with the thrilling journey of Walter White.",
         icon: "fas fa-vial"
     },
     'wolf-of-wall-street': {
         title: "The Wolf of Wall Street",
+        summary: "Master complex words through the lens of Wall Street excess.",
         icon: "fas fa-chart-line"
     }
-};
+};  
