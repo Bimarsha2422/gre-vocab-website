@@ -88,10 +88,7 @@ const seriesContent = {
         "\"The Wolf of Wall Street\" is anything but a humdrum financial drama. It's a wild ride that'll make you question every deified stockbroker you've ever admired.",
         "Picture this: In a world where Wall Street tycoons abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious brokers with a proclivity for bad behavior. The movie's tone? Far from congenial - it's a caustic take on greed and excess.",
         "Enter Jordan Belfort, the film's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with regulations, especially the SEC, the poster boy for everything wrong with financial oversight."
-    ], 
-    'random-asshole': ['fuck you bitch congenial.'], 
-    'random-asshole2': ['fuck you bitch congenial.'], 
-    'random-asshole3': ['fuck you bitch congenial.']
+    ]
 }; 
 
 // New seriesConfig object
@@ -109,17 +106,5 @@ const seriesConfig = {
     'wolf-of-wall-street': {
         title: "The Wolf of Wall Street",
         icon: "fas fa-chart-line"
-    }, 
-    'random-asshole': {
-        title: "Random Asshole",
-        icon: "fas fa-question" 
-    }, 
-    'random-asshole2': {
-        title: "Random Asshole",
-        icon: "fas fa-question" 
-    }, 
-    'random-asshole3': {
-        title: "Random Asshole",
-        icon: "fas fa-question" 
     }
 };
