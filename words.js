@@ -79,4 +79,4 @@ const seriesContent = {
         "Picture this: In a world where Wall Street tycoons abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious brokers with a proclivity for bad behavior. The movie's tone? Far from congenial - it's a caustic take on greed and excess.",
         "Enter Jordan Belfort, the film's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with regulations, especially the SEC, the poster boy for everything wrong with financial oversight."
     ]
-};
+}; 
