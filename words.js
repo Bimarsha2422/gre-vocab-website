@@ -61,3 +61,22 @@ const wordDictionary = {
         synonyms: ["cynical", "antisocial", "reclusive"]
     }
 };
+
+// Text content for each series
+const seriesContent = {
+    'the-boys': [
+        "\"The Boys\" is anything but a humdrum superhero show. It's a wild ride that'll make you question every deified cape-wearer you've ever admired.",
+        "Picture this: In a world where superheroes abound, they're not the benign saviors we expect. Nope, they're more likely to be avaricious celebs with a proclivity for bad behavior. The show's tone? Far from congenial - it's a caustic take on power and fame.",
+        "Enter Billy Butcher, the show's loquacious anti-hero with a misanthropic streak a mile wide. He's got a bone to pick with supes, especially Homelander, the poster boy for everything wrong with superhero culture."
+    ],
+    'breaking-bad': [
+        "\"Breaking Bad\" is anything but a humdrum crime drama. It's a wild ride that'll make you question every deified anti-hero you've ever admired.",
+        "Picture this: In a world where drug lords abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious chemists with a proclivity for bad behavior. The show's tone? Far from congenial - it's a caustic take on power and morality.",
+        "Enter Walter White, the show's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with society, especially his former colleagues, the poster boys for everything wrong with the American dream."
+    ],
+    'wolf-of-wall-street': [
+        "\"The Wolf of Wall Street\" is anything but a humdrum financial drama. It's a wild ride that'll make you question every deified stockbroker you've ever admired.",
+        "Picture this: In a world where Wall Street tycoons abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious brokers with a proclivity for bad behavior. The movie's tone? Far from congenial - it's a caustic take on greed and excess.",
+        "Enter Jordan Belfort, the film's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with regulations, especially the SEC, the poster boy for everything wrong with financial oversight."
+    ]
+};

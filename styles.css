@@ -1,384 +1,466 @@
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Space+Mono&display=swap');
+
+/* Global Styles */
+/* Reset margin, padding, and box-sizing for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style for the body of the document */
 body {
-    font-family: Georgia, serif;
-    font-size: 18px;
-    line-height: 1.8;
-    margin: 0;
-    padding: 20px;
-    transition: background-color 0.3s, color 0.3s;
-    background-color: #f5f5f5;
-    color: #333;
-    background-image: url(images/billy.png), url(images/homelander.png);
-    background-repeat: no-repeat;
-    background-position: left center, right center;
-    background-attachment: fixed;
-    background-size: contain;
+    font-family: 'Roboto', sans-serif; /* Set the default font to Roboto */
+    font-size: 18px; /* Set base font size */
+    line-height: 1.8; /* Set line height */
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add padding around the body */
+    transition: background-color 0.3s, color 0.3s; /* Add smooth transition for background and text color changes */
+    background-color: #f5f5f5; /* Set background color */
+    color: #333; /* Set text color */
 }
 
+/* Container style for centered content */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Maximum width of the container */
+    margin: 0 auto; /* Center the container horizontally */
+    background-color: #f5f5f5; /* Set background color with transparency */
+    padding: 30px; /* Add padding inside the container */
+    border-radius: 10px; /* Round the corners */
+    box-shadow: 0 0 0px rgba(255, 255, 255, 0.1); /* Add subtle shadow */
 }
 
-
+/* Style for main headings */
 h1 {
-    text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 30px;
-    color: #2c3e50;
+    text-align: center; /* Center-align the text */
+    font-size: 2.5em; /* Set font size */
+    margin-bottom: 30px; /* Add space below the heading */
+    color: #2c3e50; /* Set text color */
 }
+
+/* GRE Word Styles */
+/* Style for GRE words */
 .gre-word {
-    background-color: rgba(230, 243, 255, 0.5);
-    padding: 2px 4px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background-color: rgba(230, 243, 255, 0.5); /* Set background color with transparency */
+    padding: 2px 4px; /* Add padding around the word */
+    border-radius: 3px; /* Round the corners */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s; /* Add smooth transition for background color change */
 }
 
+/* Hover effect for GRE words */
 .gre-word:hover {
-    background-color: rgba(197, 225, 255, 0.7);
-} 
-
-#darkModeToggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 15px;
-    background-color: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    background-color: rgba(197, 225, 255, 0.7); /* Change background color on hover */
 }
 
-#darkModeToggle:hover {
-    background-color: #34495e;
-}
-
+/* Tooltip Styles */
+/* Style for tooltips */
 .tooltip {
-    position: absolute;
-    background-color: #2c3e50;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 16px;
-    z-index: 1;
-    display: none;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: absolute; /* Position the tooltip absolutely */
+    background-color: #2c3e50; /* Set background color */
+    color: white; /* Set text color */
+    padding: 8px 12px; /* Add padding inside the tooltip */
+    border-radius: 4px; /* Round the corners */
+    font-size: 16px; /* Set font size */
+    z-index: 1; /* Ensure the tooltip appears above other elements */
+    display: none; /* Hide the tooltip by default */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Add shadow */
 }
 
-/* Dark mode styles */
-.dark-mode {
-    background-color: #2c3e50;
-    color: #f4f4f4;
-}
-
-.dark-mode .container {
-    background-color: rgba(52, 73, 94, 0.9);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-.dark-mode h1 {
-    color: #ecf0f1;
-}
-
-.dark-mode .tooltip {
-    background-color: #ecf0f1;
-    color: #2c3e50;
-}
-
-
-.dark-mode #darkModeToggle {
-    background-color: #ecf0f1;
-    color: #2c3e50;
-}
-
-.dark-mode #darkModeToggle:hover {
-    background-color: #bdc3c7;
-}
-
-
-
-/* Info window styles */
+/* Info Window Styles */
+/* Style for informational windows */
 .info-window {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    max-width: 450px;
-    width: 90%;
+    position: fixed; /* Position the info window fixed */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust positioning to exact center */
+    background-color: white; /* Set background color */
+    padding: 25px; /* Add padding inside the info window */
+    border-radius: 10px; /* Round the corners */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+    z-index: 1000; /* Ensure the info window appears above other elements */
+    max-width: 450px; /* Set maximum width */
+    width: 90%; /* Set width */
 }
 
+/* Style for the header of info windows */
 .info-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 15px; /* Add space below the header */
 }
 
+/* Style for headings within info windows */
 .info-window h2 {
-    margin: 0;
-    color: #2c3e50;
+    margin: 0; /* Remove margin */
+    color: #2c3e50; /* Set text color */
 }
 
+/* Style for close button */
 .close-btn {
-    cursor: pointer;
-    font-size: 1.5em;
-    color: #e74c3c;
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 1.5em; /* Set font size */
+    color: #e74c3c; /* Set text color */
 }
 
+/* Style for paragraphs within info windows */
 .info-window p {
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Add space below paragraphs */
 }
 
+/* Feedback Styles */
+/* Style for feedback section */
 .feedback {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space items evenly */
+    margin-top: 20px; /* Add space above the feedback section */
 }
 
-.emoji {
-    font-size: 1.8em;
-    cursor: pointer;
-    transition: transform 0.1s;
+/* Star Rating Styles */
+/* Style for star rating section */
+.star-rating {
+    font-size: 24px; /* Set font size */
+    cursor: pointer; /* Change cursor to pointer */
 }
 
-.emoji:hover {
-    transform: scale(1.2);
+/* Style for individual stars */
+.star {
+    color: #ffd700; /* Set star color */
+    transition: color 0.2s; /* Add smooth transition for color change */
 }
 
-.dark-mode .info-window {
-    background-color: #34495e;
-    color: #ecf0f1;
+/* Hover effect for stars */
+.star:hover {
+    color: #ffcc00; /* Change star color on hover */
 }
 
-.dark-mode .info-window h2 {
-    color: #ecf0f1;
+/* Style for displaying average rating */
+.average-rating {
+    margin-top: 10px; /* Add space above the rating */
+    font-style: italic; /* Set font style to italic */
 }
 
+/* Theme Switch Styles */
+/* Wrapper style for theme switch */
+.theme-switch-wrapper {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically */
+    position: fixed; /* Position the wrapper fixed */
+    top: 20px; /* Set distance from the top */
+    right: 20px; /* Set distance from the right */
+}
+
+/* Style for theme switch */
+.theme-switch {
+    display: inline-block; /* Display as inline-block */
+    height: 34px; /* Set height */
+    position: relative; /* Position relative */
+    width: 60px; /* Set width */
+}
+
+/* Hide input element */
+.theme-switch input {
+    display: none; /* Hide the input element */
+}
+
+/* Style for the slider */
+.slider {
+    background-color: #ccc; /* Set background color */
+    bottom: 0; /* Position at the bottom */
+    cursor: pointer; /* Change cursor to pointer */
+    left: 0; /* Position on the left */
+    position: absolute; /* Position absolutely */
+    right: 0; /* Position on the right */
+    top: 0; /* Position on the top */
+    transition: .4s; /* Add smooth transition */
+}
+
+/* Style for the slider before element */
+.slider:before {
+    background-color: #fff; /* Set background color */
+    bottom: 4px; /* Position at the bottom */
+    content: ""; /* Empty content */
+    height: 26px; /* Set height */
+    left: 4px; /* Position on the left */
+    position: absolute; /* Position absolutely */
+    transition: .4s; /* Add smooth transition */
+    width: 26px; /* Set width */
+}
+
+/* Style for checked input */
+input:checked + .slider {
+    background-color: #1a242e; /* Change background color when checked */
+}
+
+/* Style for the slider before element when input is checked */
+input:checked + .slider:before {
+    transform: translateX(26px); /* Move the slider when checked */
+}
+
+/* Style for rounded slider */
+.slider.round {
+    border-radius: 34px; /* Round the corners */
+}
+
+/* Style for rounded slider before element */
+.slider.round:before {
+    border-radius: 50%; /* Make the element circular */
+}
+
+/* Style for slider icons */
+.slider-icon {
+    position: absolute; /* Position absolutely */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust positioning to exact center */
+    font-size: 16px; /* Set font size */
+    transition: opacity 0.2s ease; /* Add smooth transition for opacity */
+}
+
+/* Style for light icon */
+.light-icon {
+    left: 8px; /* Position on the left */
+}
+
+/* Style for dark icon */
+.dark-icon {
+    right: 8px; /* Position on the right */
+    opacity: 0; /* Hide the icon by default */
+}
+
+/* Style for light icon when input is checked */
+input:checked + .slider .light-icon {
+    opacity: 0; /* Hide the light icon */
+}
+
+/* Style for dark icon when input is checked */
+input:checked + .slider .dark-icon {
+    opacity: 1; /* Show the dark icon */
+}
+
+/* Dark Mode Styles */
+/* Style for dark mode body */
+body.dark-mode {
+    background-color: #1a2639; /* Set background color for dark mode */
+    color: #f0f0f0; /* Set text color for dark mode */
+}
+
+/* Style for dark mode container */
+body.dark-mode .container {
+    background-color: #1a2639; /* Set background color with transparency */
+    box-shadow: 0 0 20px #1a2639; /* Add shadow */
+}
+
+/* Style for dark mode main headings */
+body.dark-mode h1 {
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Style for dark mode tooltips */
+body.dark-mode .tooltip {
+    background-color: #ecf0f1; /* Set background color */
+    color: #2c3e50; /* Set text color */
+}
+
+/* Style for dark mode GRE words */
+body.dark-mode .gre-word {
+    background-color: rgba(70, 92, 113, 0.7); /* Set background color with transparency */
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Hover effect for dark mode GRE words */
+body.dark-mode .gre-word:hover {
+    background-color: rgba(100, 130, 160, 0.9); /* Change background color on hover */
+}
+
+/* Style for dark mode info windows */
+body.dark-mode .info-window {
+    background-color: #2c3e50; /* Set background color */
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Style for dark mode headings within info windows */
+body.dark-mode .info-window h2 {
+    color: #f0f0f0; /* Set text color */
+}
+
+/* Landing Page Styles */
+/* Style for landing page */
+.landing-page {
+    background-color: #000000; /* Set background color */
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Set height to full viewport height */
+    margin: 0; /* Remove default margin */
+    font-family: 'Space Mono', monospace; /* Set font to Space Mono */
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Style for landing page container */
+.landing-page .container {
+    text-align: center; /* Center-align text */
+    color: #ffffff; /* Set text color */
+    background-color: transparent; /* Make background transparent */
+    box-shadow: none; /* Remove shadow */
+}
+
+/* Style for animated text */
+#animated-text {
+    font-size: 2.5rem; /* Set font size */
+    font-weight: 700; /* Set font weight */
+    margin-bottom: 3rem; /* Add space below the text */
+    height: 180px; /* Set height */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+}
+
+/* Style for typing text */
+.typing-text {
+    border-right: 2px solid #ffffff; /* Add border to the right */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow */
+    margin-bottom: 1rem; /* Add space below the text */
+}
+
+/* Style for series selection */
+.series-selection {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 1.5rem; /* Add space between items */
+    margin-top: 2em; /* Add space above the section */
+}
+
+/* Style for series buttons */
+.series-button {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange items in a column */
+    align-items: center; /* Center items horizontally */
+    padding: 1.5rem; /* Add padding inside the button */
+    background-color: rgba(255, 255, 255, 0.1); /* Set background color with transparency */
+    color: #ffffff; /* Set text color */
+    text-decoration: none; /* Remove text decoration */
+    border-radius: 8px; /* Round the corners */
+    transition: all 0.3s ease; /* Add smooth transition */
+    width: 150px; /* Set width */
+}
+
+/* Hover effect for series buttons */
+.series-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Change background color on hover */
+    transform: translateY(-5px); /* Move the button upwards on hover */
+}
+
+/* Style for icons within series buttons */
+.series-button i {
+    font-size: 2rem; /* Set font size */
+    margin-bottom: 0.5rem; /* Add space below the icon */
+}
+
+/* Style for text within series buttons */
+.series-button span {
+    font-size: 1rem; /* Set font size */
+    font-weight: 300; /* Set font weight */
+}
+
+/* Style for back button */
+.back-button {
+    display: inline-block; /* Display as inline-block */
+    margin-top: 1em; /* Add space above the button */
+    padding: 0.5em 1em; /* Add padding inside the button */
+    background-color: #3498db; /* Set background color */
+    color: white; /* Set text color */
+    text-decoration: none; /* Remove text decoration */
+    border-radius: 5px; /* Round the corners */
+    transition: background-color 0.3s ease; /* Add smooth transition for background color change */
+}
+
+/* Hover effect for back button */
+.back-button:hover {
+    background-color: #2980b9; /* Change background color on hover */
+}
+
+/* Compound V Animation Styles */
+/* Container for Compound V animation */
 .compound-v-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
+    position: fixed; /* Position the container fixed */
+    top: 0; /* Position at the top */
+    left: 0; /* Position on the left */
+    width: 100%; /* Set width to full viewport width */
+    height: 100%; /* Set height to full viewport height */
+    pointer-events: none; /* Disable pointer events */
+    z-index: -1; /* Send the container to the back */
 }
 
+/* Style for particles */
 .particle {
-    position: absolute;
-    background-color: rgba(0, 100, 255, 0.5);
-    border-radius: 50%;
-    opacity: 0;
-    animation: float 15s infinite;
+    position: absolute; /* Position particles absolutely */
+    background-color: rgba(0, 100, 255, 0.5); /* Set background color with transparency */
+    border-radius: 50%; /* Make particles circular */
+    opacity: 0; /* Hide particles by default */
+    animation: float 15s infinite; /* Apply float animation */
 }
 
+/* Style for V shapes */
 .v-shape {
-    position: absolute;
-    width: 2px;
-    background-color: rgba(0, 100, 255, 0.8);
-    transform-origin: top center;
-    animation: v-float 10s ease-in-out infinite;
+    position: absolute; /* Position V shapes absolutely */
+    width: 2px; /* Set width */
+    background-color: rgba(0, 100, 255, 0.8); /* Set background color */
+    transform-origin: top center; /* Set transformation origin */
+    animation: v-float 10s ease-in-out infinite; /* Apply v-float animation */
 }
 
+/* Keyframes for float animation */
 @keyframes float {
-    0% {
-        transform: translateY(100vh) scale(0);
-        opacity: 0;
-    }
-    20% {
-        opacity: 0.8;
-    }
-    80% {
-        opacity: 0.8;
-    }
-    100% {
-        transform: translateY(-20vh) scale(1);
-        opacity: 0;
-    }
+    0% { transform: translateY(100vh) scale(0); opacity: 0; } /* Start from the bottom, invisible and small */
+    20% { opacity: 0.8; } /* Become more visible */
+    80% { opacity: 0.8; } /* Remain visible */
+    100% { transform: translateY(-20vh) scale(1); opacity: 0; } /* Move up, invisible and full size */
 }
 
+/* Keyframes for V float animation */
 @keyframes v-float {
-    0%, 100% {
-        opacity: 0;
-        transform: translateY(100vh) scaleY(0);
-    }
-    20%, 80% {
-        opacity: 1;
-    }
-    50% {
-        transform: translateY(40vh) scaleY(1);
-    }
+    0%, 100% { opacity: 0; transform: translateY(100vh) scaleY(0); } /* Start and end from the bottom, invisible and small */
+    20%, 80% { opacity: 1; } /* Become visible */
+    50% { transform: translateY(40vh) scaleY(1); } /* Move up, visible and full size */
 }
 
+/* Responsive Styles */
+/* Styles for large screens */
 @media (min-width: 1200px) {
     body {
-        background-size: 25%, 20%; 
+        background-size: 25%, 20%; /* Adjust background size */
     }
     
     .container {
-        margin: 0 auto;
-        max-width: 50%;
+        margin: 0 auto; /* Center the container horizontally */
+        max-width: 50%; /* Set maximum width */
     }
 }
 
+/* Styles for medium screens */
 @media (max-width: 1199px) {
     body {
-        background-image: none;
+        background-image: none; /* Remove background image */
     }
 }
 
-/* ... (keep existing styles) */
+/* Styles for small screens */
+@media (max-width: 600px) {
+    #animated-text {
+        font-size: 1.8rem; /* Adjust font size */
+        height: 150px; /* Adjust height */
+    }
 
+    .series-selection {
+        flex-direction: column; /* Arrange items in a column */
+    }
 
-
-/* Star rating styles */
-.star-rating {
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.star {
-    color: #ffd700;
-    transition: color 0.2s;
-}
-
-.star:hover {
-    color: #ffcc00;
-}
-
-.average-rating {
-    margin-top: 10px;
-    font-style: italic;
-}
-
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-}
-
-.theme-switch {
-    display: inline-block;
-    height: 34px;
-    position: relative;
-    width: 60px;
-}
-
-.theme-switch input {
-    display: none;
-}
-
-.slider {
-    background-color: #ccc;
-    bottom: 0;
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: .4s;
-}
-
-.slider:before {
-    background-color: #fff;
-    bottom: 4px;
-    content: "";
-    height: 26px;
-    left: 4px;
-    position: absolute;
-    transition: .4s;
-    width: 26px;
-}
-
-input:checked + .slider {
-    background-color: #1a242e;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-.slider-icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    transition: opacity 0.2s ease;
-}
-
-.light-icon {
-    left: 8px;
-}
-
-.dark-icon {
-    right: 8px;
-    opacity: 0;
-}
-
-input:checked + .slider .light-icon {
-    opacity: 0;
-}
-
-input:checked + .slider .dark-icon {
-    opacity: 1;
-}
-
-/* Dark mode styles */
-body.dark-mode {
-    background-color: #2c3e50;
-    color: #f4f4f4;
-}
-
-body.dark-mode .container {
-    background-color: rgba(52, 73, 94, 0.9);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-body.dark-mode h1 {
-    color: #ecf0f1;
-}
-
-body.dark-mode .tooltip {
-    background-color: #ecf0f1;
-    color: #2c3e50;
-}
-
-body.dark-mode .gre-word {
-    background-color: rgba(70, 92, 113, 0.7);
-    color: #ecf0f1;
-}
-
-body.dark-mode .gre-word:hover {
-    background-color: rgba(100, 130, 160, 0.9);
-}
-
-body.dark-mode .info-window {
-    background-color: #34495e;
-    color: #ecf0f1;
-}
-
-body.dark-mode .info-window h2 {
-    color: #ecf0f1;
+    .series-button {
+        width: 100%; /* Set width to full container width */
+    }
 }

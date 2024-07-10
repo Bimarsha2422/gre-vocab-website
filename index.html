@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn GRE Words with "The Boys"</title>
+    <title>GRE Vocab with Pop Culture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="landing-page">
     <div class="container">
-        <h1>Learn GRE Words with "The Boys"</h1>
-        <div class="theme-switch-wrapper">
-            <label class="theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox" />
-                <div class="slider round">
-                    <div class="slider-icon light-icon">☀️</div>
-                    <div class="slider-icon dark-icon">🌙</div>
-                </div>
-            </label>
-        </div>
-        <div id="content">
-            <!-- Content will be dynamically inserted here by JavaScript -->
+        <div id="animated-text"></div>
+        <div class="series-selection">
+            <a href="the-boys.html" class="series-button">
+                <i class="fas fa-mask"></i>
+                <span>The Boys</span>
+            </a>
+            <a href="breaking-bad.html" class="series-button">
+                <i class="fas fa-vial"></i>
+                <span>Breaking Bad</span>
+            </a>
+            <a href="wolf-of-wall-street.html" class="series-button">
+                <i class="fas fa-chart-line"></i>
+                <span>Wolf of Wall Street</span>
+            </a>
         </div>
     </div>
-    <script src="words.js"></script>
-    <script src="script.js"></script>
+    <script src="landing-script.js"></script>
 </body>
 </html>
