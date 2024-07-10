@@ -63,7 +63,7 @@ function loadSeriesContent(series) {
     if (!contentDiv) return;
 
     if (seriesContent && seriesContent[series]) {
-        contentDiv.innerHTML = highlightGREWords(seriesContent[series].join(' '));
+        contentDiv.innerHTML = highlightGREWords(seriesContent[series].map(paragraph => `<p>${paragraph}</p>`).join(''));
         initializeContent();
     } else {
         contentDiv.innerHTML = '<p>Content not found for this series.</p>';

@@ -20,7 +20,7 @@ async function eraseText(element) {
     while (text.length > 0) {
         text = text.slice(0, -1);
         element.textContent = text;
-        await sleep(30); // Adjust erasing speed here
+        await sleep(40); // Adjust erasing speed here
     }
 }
 

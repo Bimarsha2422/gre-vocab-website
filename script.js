@@ -146,21 +146,21 @@ function initializeContent() {
     });
 }
 
-// Function to toggle dark mode and save preference in local storage
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-}
-
 // Function to set the initial theme based on saved preference
 function setInitialTheme() {
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
+        const checkbox = document.getElementById('checkbox');
+        if (checkbox) {
+            checkbox.checked = true;
+        }
     }
-    const checkbox = document.getElementById('checkbox');
-    if (checkbox) {
-        checkbox.checked = document.body.classList.contains('dark-mode');
-    }
+}
+
+// Function to toggle dark mode
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
 // Function to create a particle for animation
@@ -215,21 +215,50 @@ function setupCompoundV() {
     }, 15000);
 }
 
+function addDarkModeToggle() {
+    const toggleHtml = `
+      <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+          <input type="checkbox" id="checkbox" />
+          <div class="slider round">
+            <i class="fas fa-sun slider-icon light-icon"></i>
+            <i class="fas fa-moon slider-icon dark-icon"></i>
+          </div>
+        </label>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', toggleHtml);
+  }
+
+  function setSeriesBackground(seriesKey) {
+    const config = seriesConfig[seriesKey];
+    const container = document.querySelector('.series-background-container'); // Adjust selector as needed
+
+    if (config.backgroundImages) {
+        container.style.backgroundImage = config.backgroundImages.map(img => `url('${img}')`).join(', ');
+        container.style.backgroundPosition = config.backgroundPositions.join(', ');
+        container.style.backgroundRepeat = 'no-repeat';
+        container.style.backgroundSize = 'contain'; // or 'cover', depending on your preference
+    } else {
+        container.style.backgroundImage = 'none';
+    }
+}
+
 // Event listener for DOM content loaded to initialize features
 document.addEventListener('DOMContentLoaded', () => {
+    addDarkModeToggle();
+    setInitialTheme();
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     if (toggleSwitch) {
         toggleSwitch.addEventListener('change', toggleDarkMode, false);
-        setInitialTheme();
-    }
-    
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    if (darkModeToggle) {
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
     }
 
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+
+    setInitialTheme();
     initializeContent();
     setupCompoundV();
 });
