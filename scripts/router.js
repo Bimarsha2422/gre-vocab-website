@@ -47,7 +47,6 @@ function loadContent() {
       <div class="container">
         <h1 id="series-title">${seriesConfig[currentPage].title}</h1>
         <div id="content"></div>
-        <a href="#" class="back-button">back to home</a>
       </div>
     `;
     loadSeriesContent(currentPage);

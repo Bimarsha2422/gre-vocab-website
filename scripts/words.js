@@ -88,6 +88,11 @@ export const seriesContent = {
         "\"The Wolf of Wall Street\" is anything but a humdrum financial drama. It's a wild ride that'll make you question every deified stockbroker you've ever admired.",
         "Picture this: In a world where Wall Street tycoons abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious brokers with a proclivity for bad behavior. The movie's tone? Far from congenial - it's a caustic take on greed and excess.",
         "Enter Jordan Belfort, the film's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with regulations, especially the SEC, the poster boy for everything wrong with financial oversight."
+    ], 
+    'avengers': [
+        "\"The Avengers\" is anything but a humdrum superhero movie. It's a wild ride that'll make you question every deified cape-wearer you've ever admired.",
+        "Picture this: In a world where superheroes abound, they're not the benign saviors we expect. Nope, they're more likely to be avaricious celebs with a proclivity for bad behavior. The movie's tone? Far from congenial - it's a caustic take on power and fame.",
+        "Enter Tony Stark, the film's loquacious anti-hero with a misanthropic streak a mile wide. He's got a bone to pick with authority, especially the government"
     ]
 }; 
 
@@ -108,6 +113,11 @@ export const seriesConfig = {
         title: "The Wolf of Wall Street",
         summary: "Master complex words through the lens of Wall Street excess.",
         icon: "fas fa-chart-line"
+    }, 
+    'avengers': {
+        title: "The Avengers",
+        summary: "Explore GRE words in the world of Marvel superheroes.",
+        icon: "fas fa-spider"
     }
 };  
 

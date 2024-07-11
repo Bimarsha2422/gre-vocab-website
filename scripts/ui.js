@@ -2,21 +2,16 @@ import { saveFeedback, getAverageRating } from './storage.js';
 import { highlightGREWords, wordDictionary, seriesConfig} from './words.js';
 
 export function initializeUI() {
-  addDarkModeToggle();
   setInitialTheme();
   
-  const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-  if (toggleSwitch) {
-    toggleSwitch.addEventListener('change', toggleDarkMode, false);
-  }
-
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  if (darkModeToggle) {
-    darkModeToggle.addEventListener('click', toggleDarkMode);
+  const lightbulbToggle = document.getElementById('lightbulb');
+  if (lightbulbToggle) {
+    lightbulbToggle.addEventListener('click', toggleDarkMode);
   }
 
   initializeContent();
 }
+
 
 export function initializeContent() {
   const contentDiv = document.getElementById('content');
@@ -127,32 +122,23 @@ function updateAverageRating(infoWindow, word) {
   averageElement.textContent = `Average rating: ${averageRating.toFixed(1)}`;
 }
 
-function addDarkModeToggle() {
-  const toggleHtml = `
-    <div class="theme-switch-wrapper">
-      <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="checkbox" />
-        <div class="slider round">
-          <i class="fas fa-sun slider-icon light-icon"></i>
-          <i class="fas fa-moon slider-icon dark-icon"></i>
-        </div>
-      </label>
-    </div>
-  `;
-  document.body.insertAdjacentHTML('beforeend', toggleHtml);
-}
-
 function setInitialTheme() {
-  if (localStorage.getItem('darkMode') === 'true') {
+  const isDarkMode = localStorage.getItem('darkMode') === 'true';
+  if (isDarkMode) {
     document.body.classList.add('dark-mode');
-    const checkbox = document.getElementById('checkbox');
-    if (checkbox) {
-      checkbox.checked = true;
-    }
   }
+  updateLightbulbIcon(isDarkMode);
 }
 
 function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
-  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+  const isDarkMode = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('darkMode', isDarkMode);
+  updateLightbulbIcon(isDarkMode);
+}
+
+function updateLightbulbIcon(isDarkMode) {
+  const lightbulbIcon = document.querySelector('#lightbulb i');
+  if (lightbulbIcon) {
+    lightbulbIcon.classList.toggle('glow', !isDarkMode);
+  }
 }

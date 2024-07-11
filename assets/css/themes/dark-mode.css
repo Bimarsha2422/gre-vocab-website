@@ -37,3 +37,23 @@ body.dark-mode .info-window {
 body.dark-mode .info-window h2 {
     color: #f0f0f0;
 }
+
+
+/* Dark mode styles */
+.dark-mode .nav-menu a {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.dark-mode .nav-menu a:hover,
+.dark-mode .nav-menu a.active {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.dark-mode .nav-menu a:hover i {
+    color: rgba(255, 255, 255, 1);
+}
+
+.dark-mode #lightbulb i {
+    text-shadow: none;
+    color: rgba(255, 255, 255, 0.4);
+}

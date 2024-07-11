@@ -2,17 +2,19 @@
 
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 1rem 2rem;
     background-color: #00001b;
     font-family: 'Space Mono', monospace;
 }
+
 .logo object, 
 .logo svg {
     height: 40px;
     width: auto;
     padding-top: 5px;
+    margin-right: 1.5rem;
 }
 
 .nav-menu {
@@ -23,13 +25,13 @@
 }
 
 .nav-menu li {
-    margin-left: 1.5rem;
+    margin-right: 1.5rem;
 }
 
 .nav-menu a {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
     text-transform: lowercase;
 }
@@ -39,6 +41,25 @@
     color: rgba(255, 255, 255, 1);
 }
 
+.nav-menu a i {
+    margin-right: 5px;
+}
+
+/* Lightbulb icon specific styles */
+#lightbulb {
+    cursor: pointer;
+}
+
+#lightbulb i {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+#lightbulb i.glow {
+    text-shadow: 0 0 1px #fff, 0 0 10px #fff, 0 0 15px #fff;
+    color: #fff;
+}
+
+/* Dropdown styles */
 .dropdown {
     position: relative;
 }
@@ -61,10 +82,6 @@
 
 .dropdown:hover .dropdown-content {
     display: block;
-}
-
-.nav-menu a i {
-    margin-right: 5px;
 }
 
 /* Styles for series buttons on landing page */
