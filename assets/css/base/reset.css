@@ -1,0 +1,19 @@
+/* base/reset.css */
+/* Contains CSS reset and global styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Space+Mono&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana, sans-serif;
+    font-size: 18px;
+    line-height: 1.8;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #f5f5f5;
+    color: #333;
+}

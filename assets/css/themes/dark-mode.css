@@ -1,0 +1,39 @@
+/* themes/dark-mode.css */
+/* Contains styles for dark mode */
+
+body.dark-mode {
+    background-color: #000015;
+    color: #f0f0f0;
+}
+
+body.dark-mode .container {
+    background-color: #000015;
+    box-shadow: 0 0 20px #000015;
+}
+
+body.dark-mode h1 {
+    color: #f0f0f0;
+}
+
+body.dark-mode .tooltip {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+body.dark-mode .gre-word {
+    background-color: #00004a;
+    color: #f0f0f0;
+}
+
+body.dark-mode .gre-word:hover {
+    background-color: #29297d;
+}
+
+body.dark-mode .info-window {
+    background-color: #2c3e50;
+    color: #f0f0f0;
+}
+
+body.dark-mode .info-window h2 {
+    color: #f0f0f0;
+}

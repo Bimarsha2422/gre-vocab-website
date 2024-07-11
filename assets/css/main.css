@@ -1,0 +1,16 @@
+/* main.css */
+/* This file imports all other CSS files */
+
+@import url('base/reset.css');
+@import url('base/typography.css');
+@import url('layout/layout.css');
+@import url('components/container.css');
+@import url('components/gre-word.css');
+@import url('components/tooltip.css');
+@import url('components/info-window.css');
+@import url('components/feedback.css');
+@import url('components/theme-switch.css');
+@import url('components/landing-page.css');
+@import url('themes/dark-mode.css');
+@import url('utilities/animations.css');
+@import url('utilities/responsive.css');

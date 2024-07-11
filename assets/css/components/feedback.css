@@ -1,0 +1,27 @@
+/* components/feedback.css */
+/* Contains styles for feedback and star rating */
+
+.feedback {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.star-rating {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.star {
+    color: #ffd700;
+    transition: color 0.2s;
+}
+
+.star:hover {
+    color: #ffcc00;
+}
+
+.average-rating {
+    margin-top: 10px;
+    font-style: italic;
+}

@@ -1,0 +1,34 @@
+/* utilities/responsive.css */
+/* Contains media queries and responsive styles */
+
+@media (min-width: 1200px) {
+    body {
+        background-size: 25%, 20%;
+    }
+    
+    .container {
+        margin: 0 auto;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 1199px) {
+    body {
+        background-image: none;
+    }
+}
+
+@media (max-width: 600px) {
+    #animated-text {
+        font-size: 1.8rem;
+        height: 150px;
+    }
+
+    .series-selection {
+        flex-direction: column;
+    }
+
+    .series-button {
+        width: 100%;
+    }
+}

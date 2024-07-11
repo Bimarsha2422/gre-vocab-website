@@ -1,0 +1,14 @@
+/* components/gre-word.css */
+/* Contains styles for GRE words */
+
+.gre-word {
+    background-color: rgba(230, 243, 255, 0.5);
+    padding: 2px 4px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.gre-word:hover {
+    background-color: rgba(197, 225, 255, 0.7);
+}
