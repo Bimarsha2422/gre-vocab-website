@@ -8,6 +8,26 @@
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
+    <header class="header">
+        <div class="logo">
+            <!-- Embedding SVG using object -->
+            <object type="image/svg+xml" data="assets/logo/logo_white.svg">
+                Your browser does not support SVG
+            </object>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#"><i class="fas fa-home"></i>home</a></li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-film"></i>series/movies</a>
+                    <div class="dropdown-content" id="series-dropdown">
+                        <!-- This will be populated dynamically -->
+                    </div>
+                </li>
+                <li><a href="#about"><i class="fas fa-info-circle"></i>about</a></li>
+            </ul>
+        </nav>
+    </header>
     <div id="app"></div>
     <script type="module" src="scripts/words.js"></script>
     <script type="module" src="scripts/main.js"></script>
