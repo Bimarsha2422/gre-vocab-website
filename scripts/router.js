@@ -1,5 +1,5 @@
 import { highlightGREWords, seriesConfig, seriesContent  } from './words.js';
-import { initializeContent, setSeriesBackground } from './ui.js';
+import { initializeContent } from './ui.js';
 import { startLandingAnimation } from './animations.js';
 
 function loadContent() {
@@ -51,7 +51,6 @@ function loadContent() {
       </div>
     `;
     loadSeriesContent(currentPage);
-    setSeriesBackground(currentPage);
   } else {
     // 404 page
     app.innerHTML = '<h1>404 - page not found</h1>';

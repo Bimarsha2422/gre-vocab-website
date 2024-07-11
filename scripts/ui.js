@@ -156,17 +156,3 @@ function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
   localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
-
-export function setSeriesBackground(seriesKey) {
-  const config = seriesConfig[seriesKey];
-  const container = document.querySelector('.series-background-container');
-
-  if (config.backgroundImages) {
-    container.style.backgroundImage = config.backgroundImages.map(img => `url('${img}')`).join(', ');
-    container.style.backgroundPosition = config.backgroundPositions.join(', ');
-    container.style.backgroundRepeat = 'no-repeat';
-    container.style.backgroundSize = 'contain';
-  } else {
-    container.style.backgroundImage = 'none';
-  }
-}
