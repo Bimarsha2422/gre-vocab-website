@@ -1,0 +1,48 @@
+digraph DependencyGraph {
+  node [shape=box];
+  
+  // Nodes
+  main_js [label="main.js\nscripts"];
+  router_js [label="router.js\nscripts"];
+  ui_js [label="ui.js\nscripts"];
+  words_js [label="words.js\nscripts"];
+  storage_js [label="storage.js\nscripts"];
+  animations_js [label="animations.js\nscripts"];
+  
+  // Dependencies
+  main_js -> ui_js;
+  main_js -> router_js;
+  main_js -> animations_js;
+  
+  router_js -> words_js;
+  router_js -> ui_js;
+  router_js -> animations_js;
+  
+  ui_js -> storage_js;
+  ui_js -> words_js;
+  
+  // Exports from words.js
+  words_js_highlightGREWords [label="highlightGREWords"];
+  words_js_seriesConfig [label="seriesConfig"];
+  words_js_seriesContent [label="seriesContent"];
+  words_js_wordDictionary [label="wordDictionary"];
+  
+  words_js -> words_js_highlightGREWords [style=dotted];
+  words_js -> words_js_seriesConfig [style=dotted];
+  words_js -> words_js_seriesContent [style=dotted];
+  words_js -> words_js_wordDictionary [style=dotted];
+  
+  // Exports from storage.js
+  storage_js_saveFeedback [label="saveFeedback"];
+  storage_js_getAverageRating [label="getAverageRating"];
+  
+  storage_js -> storage_js_saveFeedback [style=dotted];
+  storage_js -> storage_js_getAverageRating [style=dotted];
+  
+  // Exports from animations.js
+  animations_js_setupAnimations [label="setupAnimations"];
+  animations_js_startLandingAnimation [label="startLandingAnimation"];
+  
+  animations_js -> animations_js_setupAnimations [style=dotted];
+  animations_js -> animations_js_startLandingAnimation [style=dotted];
+}
