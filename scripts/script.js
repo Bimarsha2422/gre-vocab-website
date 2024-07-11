@@ -1,9 +1,73 @@
-// Get the current page name from the URL
+/**
+ * GRE Vocabulary Learning Tool
+ * 
+ * This script provides functionality for a GRE vocabulary learning website.
+ * It includes features such as word highlighting, tooltips, info windows,
+ * user feedback, dark mode, and animations.
+ */
+
+// =============================================================================
+// Utility Functions
+// =============================================================================
+
+/**
+ * Get the current page name from the URL.
+ * @returns {string} The current page name.
+ */
 function getCurrentPage() {
     return window.location.pathname.split('/').pop().split('.')[0];
 }
 
-// Function to create and append a tooltip
+/**
+ * Create stars for rating display.
+ * @returns {string} HTML string containing star elements.
+ */
+function createStars() {
+    return Array.from({length: 5}, (_, i) => 
+        `<span class="star" data-value="${i + 1}">&#9734;</span>`
+    ).join('');
+}
+
+// =============================================================================
+// Local Storage Handling
+// =============================================================================
+
+/**
+ * Save user feedback to local storage.
+ * @param {string} word - The word being rated.
+ * @param {number} rating - The user's rating (1-5).
+ */
+function saveFeedback(word, rating) {
+    let feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
+    if (!Array.isArray(feedback[word])) {
+        feedback[word] = [];
+    }
+    feedback[word].push(rating);
+    localStorage.setItem('greFeedback', JSON.stringify(feedback));
+}
+
+/**
+ * Get the average rating for a word.
+ * @param {string} word - The word to get the average rating for.
+ * @returns {number} The average rating (0-5).
+ */
+function getAverageRating(word) {
+    const feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
+    const ratings = Array.isArray(feedback[word]) ? feedback[word] : [];
+    if (ratings.length === 0) return 0;
+    return ratings.reduce((a, b) => a + b, 0) / ratings.length;
+}
+
+// =============================================================================
+// UI Element Creation
+// =============================================================================
+
+/**
+ * Create and append a tooltip to the body.
+ * @param {string} word - The word to display in the tooltip.
+ * @param {string} meaning - The meaning of the word.
+ * @param {DOMRect} rect - The bounding rectangle of the target element.
+ */
 function createTooltip(word, meaning, rect) {
     const tooltip = document.createElement('div');
     tooltip.className = 'tooltip';
@@ -16,12 +80,15 @@ function createTooltip(word, meaning, rect) {
     tooltip.style.display = 'block';
 }
 
-// Function to create and append an info window
+/**
+ * Create and append an info window to the body.
+ * @param {string} word - The word to display information for.
+ * @param {Object} info - The word information object.
+ */
 function createInfoWindow(word, info) {
     const infoWindow = document.createElement('div');
     infoWindow.className = 'info-window';
     
-    // Fetch the average rating
     const averageRating = getAverageRating(word);
     
     infoWindow.innerHTML = `
@@ -41,6 +108,15 @@ function createInfoWindow(word, info) {
     `;
     document.body.appendChild(infoWindow);
 
+    setupInfoWindowEventListeners(infoWindow, word);
+}
+
+/**
+ * Set up event listeners for the info window.
+ * @param {HTMLElement} infoWindow - The info window element.
+ * @param {string} word - The word associated with the info window.
+ */
+function setupInfoWindowEventListeners(infoWindow, word) {
     // Close button functionality
     const closeBtn = infoWindow.querySelector('.close-btn');
     closeBtn.addEventListener('click', () => infoWindow.remove());
@@ -65,16 +141,15 @@ function createInfoWindow(word, info) {
     });
 }
 
-// Function to create stars for rating
-function createStars() {
-    let starsHTML = '';
-    for (let i = 1; i <= 5; i++) {
-        starsHTML += `<span class="star" data-value="${i}">&#9734;</span>`;
-    }
-    return starsHTML;
-}
+// =============================================================================
+// UI Updates
+// =============================================================================
 
-// Function to update the star display based on rating
+/**
+ * Update the star display based on the given rating.
+ * @param {HTMLElement} container - The container of the stars.
+ * @param {number} rating - The rating to display (1-5).
+ */
 function updateStarDisplay(container, rating) {
     const stars = container.querySelectorAll('.star');
     stars.forEach((star, index) => {
@@ -82,33 +157,26 @@ function updateStarDisplay(container, rating) {
     });
 }
 
-// Function to save feedback to local storage
-function saveFeedback(word, rating) {
-    let feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
-    if (!Array.isArray(feedback[word])) {
-        feedback[word] = [];
-    }
-    feedback[word].push(rating);
-    localStorage.setItem('greFeedback', JSON.stringify(feedback));
-}
-
-// Function to get the average rating of a word
-function getAverageRating(word) {
-    const feedback = JSON.parse(localStorage.getItem('greFeedback')) || {};
-    const ratings = Array.isArray(feedback[word]) ? feedback[word] : [];
-    if (ratings.length === 0) return 0;
-    const sum = ratings.reduce((a, b) => a + b, 0);
-    return sum / ratings.length;
-}
-
-// Function to update the average rating display
+/**
+ * Update the average rating display in the info window.
+ * @param {HTMLElement} infoWindow - The info window element.
+ * @param {string} word - The word to update the rating for.
+ */
 function updateAverageRating(infoWindow, word) {
     const averageRating = getAverageRating(word);
     const averageElement = infoWindow.querySelector('.average-rating');
     averageElement.textContent = `Average rating: ${averageRating.toFixed(1)}`;
 }
 
-// Function to highlight GRE words in the text
+// =============================================================================
+// Word Highlighting and Interaction
+// =============================================================================
+
+/**
+ * Highlight GRE words in the given text.
+ * @param {string} text - The text to process.
+ * @returns {string} The processed text with GRE words highlighted.
+ */
 function highlightGREWords(text) {
     return text.replace(/\b(\w+)\b/g, (match, word) => {
         if (wordDictionary.hasOwnProperty(word.toLowerCase())) {
@@ -118,7 +186,9 @@ function highlightGREWords(text) {
     });
 }
 
-// Function to initialize the page content
+/**
+ * Initialize the page content by setting up event listeners for GRE words.
+ */
 function initializeContent() {
     const contentDiv = document.getElementById('content');
     if (!contentDiv) return;
@@ -146,7 +216,13 @@ function initializeContent() {
     });
 }
 
-// Function to set the initial theme based on saved preference
+// =============================================================================
+// Theme Handling
+// =============================================================================
+
+/**
+ * Set the initial theme based on the saved preference.
+ */
 function setInitialTheme() {
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
@@ -157,13 +233,40 @@ function setInitialTheme() {
     }
 }
 
-// Function to toggle dark mode
+/**
+ * Toggle dark mode on and off.
+ */
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-// Function to create a particle for animation
+/**
+ * Add the dark mode toggle switch to the page.
+ */
+function addDarkModeToggle() {
+    const toggleHtml = `
+      <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+          <input type="checkbox" id="checkbox" />
+          <div class="slider round">
+            <i class="fas fa-sun slider-icon light-icon"></i>
+            <i class="fas fa-moon slider-icon dark-icon"></i>
+          </div>
+        </label>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', toggleHtml);
+}
+
+// =============================================================================
+// Animation Functions
+// =============================================================================
+
+/**
+ * Create a particle element for animation.
+ * @returns {HTMLElement} The created particle element.
+ */
 function createParticle() {
     const particle = document.createElement('div');
     particle.classList.add('particle');
@@ -173,7 +276,10 @@ function createParticle() {
     return particle;
 }
 
-// Function to create a V shape for animation
+/**
+ * Create a V shape element for animation.
+ * @returns {HTMLElement} The created V shape container element.
+ */
 function createVShape() {
     const vContainer = document.createElement('div');
     vContainer.style.left = Math.random() * 80 + 10 + 'vw';
@@ -196,7 +302,9 @@ function createVShape() {
     return vContainer;
 }
 
-// Function to setup the Compound V animation
+/**
+ * Set up the Compound V animation.
+ */
 function setupCompoundV() {
     const container = document.createElement('div');
     container.classList.add('compound-v-container');
@@ -215,39 +323,36 @@ function setupCompoundV() {
     }, 15000);
 }
 
-function addDarkModeToggle() {
-    const toggleHtml = `
-      <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="checkbox">
-          <input type="checkbox" id="checkbox" />
-          <div class="slider round">
-            <i class="fas fa-sun slider-icon light-icon"></i>
-            <i class="fas fa-moon slider-icon dark-icon"></i>
-          </div>
-        </label>
-      </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', toggleHtml);
-  }
+// =============================================================================
+// Series-specific Functions
+// =============================================================================
 
-  function setSeriesBackground(seriesKey) {
+/**
+ * Set the background for a specific series.
+ * @param {string} seriesKey - The key of the series to set the background for.
+ */
+function setSeriesBackground(seriesKey) {
     const config = seriesConfig[seriesKey];
-    const container = document.querySelector('.series-background-container'); // Adjust selector as needed
+    const container = document.querySelector('.series-background-container');
 
     if (config.backgroundImages) {
         container.style.backgroundImage = config.backgroundImages.map(img => `url('${img}')`).join(', ');
         container.style.backgroundPosition = config.backgroundPositions.join(', ');
         container.style.backgroundRepeat = 'no-repeat';
-        container.style.backgroundSize = 'contain'; // or 'cover', depending on your preference
+        container.style.backgroundSize = 'contain';
     } else {
         container.style.backgroundImage = 'none';
     }
 }
 
-// Event listener for DOM content loaded to initialize features
+// =============================================================================
+// Initialization
+// =============================================================================
+
 document.addEventListener('DOMContentLoaded', () => {
     addDarkModeToggle();
     setInitialTheme();
+    
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     if (toggleSwitch) {
         toggleSwitch.addEventListener('change', toggleDarkMode, false);
@@ -258,9 +363,9 @@ document.addEventListener('DOMContentLoaded', () => {
         darkModeToggle.addEventListener('click', toggleDarkMode);
     }
 
-    setInitialTheme();
     initializeContent();
     setupCompoundV();
 });
 
+// Make initializeContent globally available for use in other scripts
 window.initializeContent = initializeContent;
