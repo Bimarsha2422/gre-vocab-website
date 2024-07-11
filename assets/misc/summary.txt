@@ -1,0 +1,235 @@
+index.html
+
+This HTML file serves as the main entry point for the GRE Vocab with Pop Culture application. It includes essential meta tags, links to external stylesheets for styling, and scripts to initialize the application.
+
+#######################################
+
+templates/series-page-template.html
+
+This HTML template provides a structured layout for the "Learn GRE Words" series page. It includes meta tags for character encoding and viewport settings, links to external stylesheets and JavaScript modules necessary for functionality.
+
+#######################################
+
+assets/css/main.css
+
+This CSS file serves as the main stylesheet for the project, importing various other CSS files for different aspects of styling and layout.
+
+Imported CSS Files:
+
+base/reset.css: Resets default browser styling.
+base/typography.css: Defines typography styles.
+layout/layout.css: Specifies layout styles.
+components/container.css: Styles for container elements.
+components/gre-word.css: Styles related to GRE words.
+components/tooltip.css: Styles for tooltips.
+components/info-window.css: Styles for information windows.
+components/feedback.css: Styles for feedback components.
+components/theme-switch.css: Styles for theme switcher.
+components/landing-page.css: Styles specific to the landing page.
+themes/dark-mode.css: Styles for dark mode theme.
+utilities/animations.css: Defines animation styles.
+utilities/responsive.css: Handles responsive design styles.
+
+#######################################
+
+scripts/main.js
+
+This script initializes the user interface, router, and animations when the DOM content is fully loaded.
+
+Imported Functions:
+
+initializeUI(): Imported from ./ui.js. Initializes the user interface components.
+initializeRouter(): Imported from ./router.js. Sets up routing for different pages.
+setupAnimations(): Imported from ./animations.js. Configures animations for visual effects.
+
+#######################################
+
+scripts/router.js
+
+This script manages page routing and content loading based on the URL hash.
+
+Imported Functions:
+
+highlightGREWords(), seriesConfig, seriesContent: Imported from ./words.js.
+initializeContent, setSeriesBackground: Imported from ./ui.js.
+startLandingAnimation: Imported from ./animations.js.
+Locally Defined Functions:
+
+loadContent(): Loads content based on the current page hash. Handles rendering of landing and series pages, including dynamic population of series buttons and content loading.
+populateSeriesButtons(): Populates series selection buttons dynamically based on seriesConfig.
+loadSeriesContent(series): Loads content for a specific series based on seriesContent, highlighting GRE words if available.
+Exported Function:
+
+initializeRouter(): Initializes the router, sets up initial content load, and listens for hash changes to update the displayed content.
+
+#######################################
+
+scripts/animations.js
+
+This script handles animations for the landing page of the application.
+
+Exported Functions:
+
+setupAnimations(): Initializes the compound V-shaped animation by creating particles and periodically adding V shapes to the container.
+startLandingAnimation(): Initiates an animated text sequence in the landing page's #animated-text element.
+Locally Defined Functions:
+
+createParticle(): Creates a randomly positioned and sized particle element for the background animation.
+createVShape(): Creates a V-shaped element consisting of two lines rotated at specific angles.
+setupCompoundV(): Sets up a continuous animation of particles and periodically adds V shapes to simulate a dynamic effect.
+animateText(): Animates a cycling text sequence in the #animated-text element using async functions to type, wait, and erase phrases.
+sleep(ms): Delays execution for a specified number of milliseconds.
+typeText(text, element): Types out the given text into the specified element character by character with a specified typing speed.
+eraseText(element): Erases text content from the specified element character by character with a specified erasing speed.
+
+#######################################
+
+scripts/storage.js
+
+This script manages storage operations related to feedback ratings for GRE words.
+
+Exported Functions:
+
+saveFeedback(word, rating): Saves a feedback rating for a specified word into local storage. Ratings are stored as arrays under each word key.
+getAverageRating(word): Retrieves the average feedback rating for a specified word from local storage. Returns 0 if no ratings are available.
+
+#######################################
+
+scripts/ui.js
+
+This script manages the user interface functionality for a GRE vocabulary learning application.
+
+Exported Functions:
+
+initializeUI(): Initializes the UI components including dark mode toggle and content initialization.
+initializeContent(): Initializes content interactions, including tooltip creation and info window handling for GRE words.
+setSeriesBackground(seriesKey): Sets the background for a specified series based on configuration.
+
+Locally Defined Functions:
+
+createTooltip(word, meaning, rect): Creates a tooltip displaying the meaning of a word on hover.
+createInfoWindow(word, info): Creates an info window displaying detailed information about a word, including feedback and ratings.
+setupInfoWindowEventListeners(infoWindow, word): Sets up event listeners for the info window, including close functionality and star rating input.
+createStars(): Generates HTML for star ratings.
+updateStarDisplay(container, rating): Updates the display of star ratings based on user input.
+updateAverageRating(infoWindow, word): Updates the displayed average rating for a word.
+
+#######################################
+
+scripts/words.js
+
+This script defines a word dictionary and series content for a GRE vocabulary learning application.
+
+Exported Constants:
+
+wordDictionary: A dictionary of GRE words with meanings, usage, roots, and synonyms.
+seriesContent: Text content for each series, providing context and examples of GRE words in use.
+seriesConfig: Configuration object for each series, including titles, summaries, icons, and background positions.
+
+Exported Functions:
+
+highlightGREWords(text): Highlights GRE words in a given text by wrapping them in <span> tags with appropriate data attributes.
+
+############
+
+Project tree 
+
+.
+├── README.md
+├── a.txt
+├── assets
+│   ├── css
+│   │   ├── base
+│   │   │   ├── reset.css
+│   │   │   └── typography.css
+│   │   ├── components
+│   │   │   ├── container.css
+│   │   │   ├── feedback.css
+│   │   │   ├── gre-word.css
+│   │   │   ├── info-window.css
+│   │   │   ├── landing-page.css
+│   │   │   ├── theme-switch.css
+│   │   │   └── tooltip.css
+│   │   ├── layout
+│   │   │   └── layout.css
+│   │   ├── main.css
+│   │   ├── themes
+│   │   │   └── dark-mode.css
+│   │   └── utilities
+│   │       ├── animations.css
+│   │       └── responsive.css
+│   ├── images
+│   │   ├── billy.png
+│   │   ├── homelander.png
+│   │   └── laser.jpg
+│   └── misc
+│       ├── dependency.dot
+│       ├── dependency_graph.png
+│       └── summary
+├── index.html
+├── scripts
+│   ├── animations.js
+│   ├── main.js
+│   ├── router.js
+│   ├── storage.js
+│   ├── ui.js
+│   └── words.js
+└── templates
+    └── series-page-template.html
+
+12 directories, 30 files
+
+
+###################
+
+Dependency Graph 
+
+digraph DependencyGraph {
+  node [shape=box];
+  
+  // Nodes
+  main_js [label="main.js\nscripts"];
+  router_js [label="router.js\nscripts"];
+  ui_js [label="ui.js\nscripts"];
+  words_js [label="words.js\nscripts"];
+  storage_js [label="storage.js\nscripts"];
+  animations_js [label="animations.js\nscripts"];
+  
+  // Dependencies
+  main_js -> ui_js;
+  main_js -> router_js;
+  main_js -> animations_js;
+  
+  router_js -> words_js;
+  router_js -> ui_js;
+  router_js -> animations_js;
+  
+  ui_js -> storage_js;
+  ui_js -> words_js;
+  
+  // Exports from words.js
+  words_js_highlightGREWords [label="highlightGREWords"];
+  words_js_seriesConfig [label="seriesConfig"];
+  words_js_seriesContent [label="seriesContent"];
+  words_js_wordDictionary [label="wordDictionary"];
+  
+  words_js -> words_js_highlightGREWords [style=dotted];
+  words_js -> words_js_seriesConfig [style=dotted];
+  words_js -> words_js_seriesContent [style=dotted];
+  words_js -> words_js_wordDictionary [style=dotted];
+  
+  // Exports from storage.js
+  storage_js_saveFeedback [label="saveFeedback"];
+  storage_js_getAverageRating [label="getAverageRating"];
+  
+  storage_js -> storage_js_saveFeedback [style=dotted];
+  storage_js -> storage_js_getAverageRating [style=dotted];
+  
+  // Exports from animations.js
+  animations_js_setupAnimations [label="setupAnimations"];
+  animations_js_startLandingAnimation [label="startLandingAnimation"];
+  
+  animations_js -> animations_js_setupAnimations [style=dotted];
+  animations_js -> animations_js_startLandingAnimation [style=dotted];
+}
+
