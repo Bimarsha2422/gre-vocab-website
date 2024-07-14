@@ -1,5 +1,5 @@
 import { saveFeedback, getAverageRating } from './storage.js';
-import { highlightGREWords, wordDictionary, seriesConfig} from './words.js';
+import { wordDictionary} from './wordDictionary.js';
 
 export function initializeUI() {
   setInitialTheme();
@@ -58,21 +58,31 @@ function createInfoWindow(word, info) {
   
   const averageRating = getAverageRating(word);
   
-  infoWindow.innerHTML = `
+  let infoContent = `
     <div class="info-header">
       <h2>${word}</h2>
       <span class="close-btn">&#10005;</span>
     </div>
-    <p><strong>Meaning:</strong> ${info.meaning}</p>
-    <p><strong>Usage:</strong> ${info.usage}</p>
-    <p><strong>Root:</strong> ${info.root}</p>
-    <p><strong>Synonyms:</strong> ${info.synonyms.join(', ')}</p>
+  `;
+
+  // Dynamically generate content based on info object
+  for (const [key, value] of Object.entries(info)) {
+    if (key !== 'word') {  // Skip the 'word' key as it's already in the header
+      const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
+      let formattedValue = Array.isArray(value) ? value.join(', ') : value;
+      infoContent += `<p><strong>${formattedKey}:</strong> ${formattedValue}</p>`;
+    }
+  }
+
+  infoContent += `
     <p>How helpful was this information?</p>
     <div class="star-rating" data-word="${word}">
       ${createStars()}
     </div>
     <p class="average-rating">Average rating: ${averageRating.toFixed(1)}</p>
   `;
+
+  infoWindow.innerHTML = infoContent;
   document.body.appendChild(infoWindow);
 
   setupInfoWindowEventListeners(infoWindow, word);

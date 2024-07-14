@@ -1,4 +1,4 @@
-import { highlightGREWords, seriesConfig, seriesContent  } from './words.js';
+import { highlightGREWords, seriesConfig, seriesContent } from './wordDictionary.js';
 import { initializeContent } from './ui.js';
 import { startLandingAnimation } from './animations.js';
 
