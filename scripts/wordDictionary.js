@@ -50,11 +50,6 @@ export const seriesContent = {
     "HUGHIE: <i>(voiceover)</i> And that's how we learned that sometimes, the most powerful word of all... is silence.\n"]
     ,
     
-    'breaking-bad': [
-        "\"Breaking Bad\" is anything but a humdrum crime drama. It's a wild ride that'll make you question every deified anti-hero you've ever admired.",
-        "Picture this: In a world where drug lords abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious chemists with a proclivity for bad behavior. The show's tone? Far from congenial - it's a caustic take on power and morality.",
-        "Enter Walter White, the show's loquacious protagonist with a misanthropic streak a mile wide. He's got a bone to pick with society, especially his former colleagues, the poster boys for everything wrong with the American dream."
-    ],
     'wolf-of-wall-street': [
         "\"The Wolf of Wall Street\" is anything but a humdrum financial drama. It's a wild ride that'll make you question every deified stockbroker you've ever admired.",
         "Picture this: In a world where Wall Street tycoons abound, they're not the benign businessmen we expect. Nope, they're more likely to be avaricious brokers with a proclivity for bad behavior. The movie's tone? Far from congenial - it's a caustic take on greed and excess.",
@@ -80,7 +75,23 @@ export const seriesContent = {
         "The war began with the assassination of Archduke Franz Ferdinand of Austria-Hungary in 1914, triggering a chain of events that led to the mobilization of millions of soldiers and the declaration of war by multiple countries.",
         "The conflict quickly escalated, with the Central Powers (Germany, Austria-Hungary, and the Ottoman Empire) facing off against the Allies (France, Russia, the United Kingdom, and later the United States). Battles raged across Europe, Africa, the Middle East, and the Pacific, resulting in millions of casualties and widespread devastation.",
         "The war saw the introduction of new technologies and tactics, including tanks, airplanes, and machine guns. It also witnessed the use of chemical weapons, such as mustard gas, which caused horrific injuries and suffering.",
-    ]
+    ], 
+    'aitah': ["I (32F) have always been the black sheep of my family. My parents and siblings are all successful professionals, while I've struggled with depression and worked odd jobs. They've never been shy about expressing their disappointment in me.", 
+    'My sister\'s (28F) wedding was last weekend. I was invited but not part of the wedding party. I felt ambivalent about attending - happy for my sister but dreading the family interaction. The night before, I overheard my parents and sister talking about me. They hoped I wouldn\'t "embarrass" them and were "glad" I wasn\'t a bridesmaid because I\'d "ruin" the photos. Their words were caustic, leaving me feeling desiccated emotionally.', 
+    'I considered not going, but decided to be amenable and attend anyway. During the reception, family members were invited to share stories about the couple. My parents gave a saccharine speech to aggrandize my sister, painting her as the epitome of success and decorum. Something in me snapped.', 
+    "In a moment of audacious, brazen confidence, I grabbed the mic. What followed was a diatribe that left the room incredulous. I advocated for honesty in our family dynamics, exposing the convoluted and often cruel treatment I'd endured. I was candid about how they covet status and success, their avaricious pursuit of wealth and prestige at the cost of genuine relationships.", 
+    "I spoke about the anachronistic expectations they held, their attempts to ameliorate family issues by sweeping them under the rug. I mentioned dad's affair, mom's attempts to adulterate my sister's wedding plans to suit her tastes, and their constant efforts to castigate me for not fitting their mold.", 
+    "As I spoke, I could see guests' expressions change from benign interest to shock. Some seemed to construe my words as mere jealousy, while others appeared to understand the deeper issues at play. My sister was in tears, my parents furious. The atmosphere, once full of alacrity, now felt craven and tense.", "I didn't demur when my brother-in-law tried to stop me - I felt this needed to be said. However, seeing the hurt I'd caused, I began to feel contrite. I ended my speech by wishing the couple well, hoping they'd build a more ingenuous and loving family than the one we grew up in.", 
+    "The aftermath was chaotic. Some relatives called me brave, others berated me for destroying the wedding's decorum. My family was livid, accusing me of intentionally ruining the day out of jealousy. They called my actions a form of calumny against them.", 
+    "I left shortly after, my emotions a mix of relief and regret. My phone has been blowing up with messages ranging from support to condemnation. Part of me feels terrible for disrupting my sister's big day, but another part feels like this confrontation was long overdue.",
+    "So, Reddit, AITA for my deft but destructive takedown of my family's façade?", 
+    'Edit: Wow, this blew up overnight. Thank you all for your feedback. To address some common questions/comments:', 
+    '1. Yes, I\'ve been in therapy. My family\'s attitude towards mental health is... not great.',
+    '2. No, I wasn\'t drunk. I wish I had that excuse.',
+    '3. To those suggesting I should have addressed this privately: I\'ve tried. Many times. It always gets dismissed as me being "too sensitive."',
+    '4. I appreciate the support, but please don\'t send hate to my family. That won\'t solve anything.',
+    '5. To the person who called my speech "derivative of a soap opera plot" - fair point, but sadly, this is my real life.', 
+    "I'm still processing everything, but your comments have helped me realize I need to set some serious boundaries with my family. Thanks, Reddit, for not being as banal as my family in your responses to complex issues.\n"]    
 }; 
 
 // New seriesConfig object
@@ -98,13 +109,12 @@ export const seriesConfig = {
         icon: "fas fa-mask",
         backgroundPositions: ["left center", "right center"]
     },
-    
-     
-    'breaking-bad': {
-        title: "Breaking Bad",
-        summary: "Expand your vocabulary with the thrilling journey of Walter White.",
-        icon: "fas fa-vial"
-    },
+
+    'aitah': {
+        title: "AITAH?",
+        summary: "Dive into GRE words with real-life dilemmas from the popular subreddit.",
+        icon: "fas fa-user"
+    }
 };  
 
 
