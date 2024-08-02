@@ -2,7 +2,7 @@
 /* Contains styles for GRE words */
 
 .gre-word {
-    background-color: rgba(230, 243, 255, 0.5);
+    background-color: rgba(168, 207, 243, 0.348);
     padding: 2px 4px;
     border-radius: 3px;
     cursor: pointer;
@@ -10,5 +10,5 @@
 }
 
 .gre-word:hover {
-    background-color: rgba(197, 225, 255, 0.7);
+    background-color: rgba(103, 172, 246, 0.469);
 }
