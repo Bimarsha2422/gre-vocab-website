@@ -37,8 +37,16 @@ function loadContent() {
   } else if (currentPage === 'about') {
     app.innerHTML = `
       <div class="container">
-        <h1>about gre vocab with pop culture</h1>
-        <p>learn gre vocabulary through popular tv series and movies.</p>
+        <h1>About the project</h1>
+        <p>Hi there,</p>
+        <p>I'm Bimarsha, and I'm excited to share this project with you. I started it in my free time because I was struggling to remember GRE vocabulary. As I created the content and reviewed the website, I found that I learned the words quite well, and I hope you will too.</p>
+        <p>Here's how it works: The texts on this site correspond to the Gregmat word sets. As you read, you'll see some words highlighted. The goal is for you to encounter these words in context and try to guess their meanings or get a feel for how they're used. When you hover over or click on a word to see its definition, hopefully it'll match your intuition. This process of reading, guessing, and confirming can help you learn the word in a way that sticks.</p>
+        <p>All the content, including word meanings and texts, is generated using Large Language Models. While this approach allows for a wide range of engaging content, it's important to note that the word meanings may not always be perfect. I'm continuously working on refining the accuracy of the information provided.</p>
+        <p>Please note that this website is still in its early stages. I have a few samples available to gather feedback, and I'm actively working on improving and expanding the content.</p>
+        <p>I plan to make the code for this project public. My goal is to make it easy for users to add their own content based on their preferences. Ideally, you should be able to add a text file containing your essay and some basic config info, and the website will automatically adjust to include it with all the features.</p>
+        <p>I'm really open to any sort of suggestions or feedback. This project aims to make learning GRE vocabulary easier and more engaging. Your input will help shape the future of this tool.</p>
+        <p>Thanks for visiting, and happy learning!</p>
+        <p>Bimarsha</p>
       </div>
     `;
   } else if (seriesConfig && seriesConfig.hasOwnProperty(currentPage)) {
