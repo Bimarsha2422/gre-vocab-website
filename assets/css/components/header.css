@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
 
+/* .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #00001b;
+    font-family: 'Space Mono', monospace;
+    position: fixed;
+} */
 .header {
     display: flex;
     justify-content: flex-start;
@@ -7,7 +16,30 @@
     padding: 1rem 2rem;
     background-color: #00001b;
     font-family: 'Space Mono', monospace;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+body {
+    margin: 0;
+    padding-top: 20px; /* Adjust this value based on your header height */
+}
+
+
+
+/* .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color:#00001b;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); */ 
+
 
 .logo object, 
 .logo svg {
@@ -118,4 +150,9 @@
 .series-button span {
     font-size: 0.9rem;
     text-align: center;
+}
+
+#app, .container {
+    position: relative;
+    z-index: 1;
 }
