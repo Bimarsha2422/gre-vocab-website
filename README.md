@@ -1,6 +1,6 @@
 # GRE Vocabulary Companion
 
-I created this project because I was having difficulty learning GRE vocabulary. The GRE Vocabulary Companion is designed to help you learn new words more effectively.
+I created this project because I was having difficulty learning GRE vocabulary. The GRE Vocabulary Companion is designed to help you learn new words more effectively. You can access the website hosted on Github Pages [here]([url](https://bimarsha2422.github.io/gre-vocab-website/)). 
 
 ## Key Features
 
